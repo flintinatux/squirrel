@@ -2,7 +2,7 @@ local getinfo = debug.getinfo
 local insert, remove, unpack = table.insert, table.remove, table.unpack
 local ipairs, pairs = ipairs, pairs
 
-local add, compose, concat, curry, curryN, flip, head, init, last, map, partial, pipe, prop, reduce, reverse, tail
+local add, compose, concat, curry, curryN, flip, evolve, head, init, is, last, map, partial, pick, pipe, prop, reduce, reverse, tail
 
 -- Internal
 
@@ -65,6 +65,18 @@ end
 -- curryN : number -> ((a, b, ...) -> z) -> a -> b -> ... -> z
 curryN = _curryN(2, _curryN)
 
+-- evolve : { k = (v -> v) } -> { k = v } -> { k = v }
+evolve = _curryN(2, function(xfrms, obj)
+  local res = {}
+  for key, val in pairs(obj) do
+    local xfrm = xfrms[key]
+    res[key] = type(xfrm) == 'function' and xfrm(val)
+            or type(xfrm) == 'table'    and evolve(xfrm, val)
+            or val
+  end
+  return res
+end)
+
 -- flip : (a -> b -> ... -> z) -> b -> a -> ... -> z
 flip = function(fn)
   fn = curry(fn)
@@ -85,6 +97,11 @@ init = function(a)
   return b
 end
 
+-- is : string -> a -> boolean
+is = _curryN(2, function(typestring, a)
+  return type(a) == typestring
+end)
+
 -- last : [a] -> a
 last = function(list)
   return list[#list]
@@ -102,6 +119,13 @@ partial = _curryN(2, function(fn, args)
   return function(...)
     return fn(unpack(concat(args, {...})))
   end
+end)
+
+-- pick : [string] -> { k = v } -> { k = v }
+pick = _curryN(2, function(keys, a)
+  local b = {}
+  for i, key in ipairs(keys) do b[key] = a[key] end
+  return b
 end)
 
 -- pipe : ((a -> b), (b -> c), ..., (y -> z)) -> a -> z
@@ -152,12 +176,15 @@ local squirrel = {
   concat  = concat,
   curry   = curry,
   curryN  = curryN,
+  evolve  = evolve,
   flip    = flip,
   head    = head,
   init    = init,
+  is      = is,
   last    = last,
   map     = map,
   partial = partial,
+  pick    = pick,
   pipe    = pipe,
   prop    = prop,
   reduce  = reduce,
