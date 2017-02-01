@@ -121,13 +121,13 @@ end
 -- Testing
 
 local addFive = compose(add(2), add(3))
-print(addFive(6))
+assert(addFive(6) == 11)
 
 local five = partial(head, { { 5 } })
-print(five())
+assert(five() == 5)
 
 local sum = reduce(add, 0)
-print(sum(init({ 1, 2, 3, 4 })))
+assert(sum(tail({ 1, 2, 3, 4 })) == 9)
 
 -- Export
 
