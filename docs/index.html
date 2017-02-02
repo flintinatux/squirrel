@@ -1,0 +1,848 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>squirrel</title>
+    <link rel="stylesheet" href="ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>squirrel</h1>
+
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Math">Math</a></li>
+<li><a href="#Function">Function</a></li>
+<li><a href="#List">List</a></li>
+<li><a href="#Table">Table</a></li>
+<li><a href="#Type">Type</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><strong>squirrel</strong></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>squirrel</code></h1>
+<p><em>A practical functional library for lua</em><br/>
+ Source on <a href="http://github.com/flintinatux/squirrel">Github</a></p>
+<p>
+
+</p>
+    <h3>Info:</h3>
+    <ul>
+        <li><strong>Copyright</strong>: 2017</li>
+        <li><strong>Release</strong>: 0.0.1</li>
+        <li><strong>License</strong>: <a href="http://www.opensource.org/licenses/mit-license.php">MIT</a></li>
+        <li><strong>Author</strong>: <a href="http://github.com/flintinatux">Scott McCormack</a></li>
+    </ul>
+
+
+<h2><a href="#Math">Math</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#add">add (a, b)</a></td>
+	<td class="summary"><code>number -&gt; number -&gt; number</code>.</td>
+	</tr>
+</table>
+<h2><a href="#Function">Function</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#compose">compose (...)</a></td>
+	<td class="summary"><code>((y -&gt; z), ..., (a -&gt; b)) -&gt; a -&gt; z</code>.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#curry">curry (f)</a></td>
+	<td class="summary"><code>((a, b) -&gt; c) -&gt; a -&gt; b -&gt; c</code>.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#curryN">curryN (arity, f)</a></td>
+	<td class="summary"><code>number -&gt; ((a, b) -&gt; c) -&gt; a -&gt; b -&gt; c</code>.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#flip">flip (f)</a></td>
+	<td class="summary"><code>(a -&gt; b -&gt; c) -&gt; b -&gt; a -&gt; c</code>.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#partial">partial (f, args)</a></td>
+	<td class="summary"><code>((a, b, ...) -&gt; z) -&gt; [a, b, ...] -&gt; ((c, d, ...) -&gt; z)</code>.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#pipe">pipe (...)</a></td>
+	<td class="summary"><code>((a -&gt; b), ..., (y -&gt; z)) -&gt; a -&gt; z</code>.</td>
+	</tr>
+</table>
+<h2><a href="#List">List</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#concat">concat (fst, snd)</a></td>
+	<td class="summary"><code>[a] -&gt; [a] -&gt; [a]</code>.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#head">head (list)</a></td>
+	<td class="summary"><code>[a] -&gt; a | nil</code>.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#init">init (list)</a></td>
+	<td class="summary"><code>[a] -&gt; [a]</code>.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#last">last (list)</a></td>
+	<td class="summary"><code>[a] -&gt; a | nil</code>.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#map">map (f, list)</a></td>
+	<td class="summary"><code>(a -&gt; b) -&gt; [a] -&gt; [b]</code>.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#reduce">reduce (f, acc, list)</a></td>
+	<td class="summary"><code>(b -&gt; a -&gt; b) -&gt; b -&gt; [a] -&gt; b</code>.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#reverse">reverse (list)</a></td>
+	<td class="summary"><code>[a] -&gt; [a]</code>.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#tail">tail (list)</a></td>
+	<td class="summary"><code>[a] -&gt; [a]</code>.</td>
+	</tr>
+</table>
+<h2><a href="#Table">Table</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#evolve">evolve (transforms, table)</a></td>
+	<td class="summary"><code>{ s = (a -&gt; a) } -&gt; { s = a } -&gt; { s = a }</code>.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#pick">pick (keys, table)</a></td>
+	<td class="summary"><code>[string] -&gt; { s = a } -&gt; { s = a }</code>.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#prop">prop (key, table)</a></td>
+	<td class="summary"><code>string -&gt; { s = a } -&gt; a | nil</code>.</td>
+	</tr>
+</table>
+<h2><a href="#Type">Type</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#is">is (type, a)</a></td>
+	<td class="summary"><code>string -&gt; a -&gt; boolean</code>.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Math"></a>Math</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "add"></a>
+    <strong>add (a, b)</strong>
+    </dt>
+    <dd>
+    <code>number -&gt; number -&gt; number</code>. </p>
+
+<p> Adds two numbers.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">a</span>
+            <span class="types"><span class="type">number</span></span>
+
+
+
+        </li>
+        <li><span class="parameter">b</span>
+            <span class="types"><span class="type">number</span></span>
+
+
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        The sum of the two numbers.
+    </ol>
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Function"></a>Function</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "compose"></a>
+    <strong>compose (...)</strong>
+    </dt>
+    <dd>
+    <code>((y -&gt; z), ..., (a -&gt; b)) -&gt; a -&gt; z</code>. </p>
+
+<p> Performs right-to-left function composition. The rightmost
+ function may have any arity. The remaining functions must be unary.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">...</span>
+            <span class="types"><span class="type">function</span></span>
+         The functions to compose.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">function</span></span>
+        A new, composed function. (<em>Not automatically curried.</em>)
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="index.html#pipe">pipe</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "curry"></a>
+    <strong>curry (f)</strong>
+    </dt>
+    <dd>
+
+<p><code>((a, b) -&gt; c) -&gt; a -&gt; b -&gt; c</code>. </p>
+
+<p> Returns a curried equivalent of the provided function.
+ Arguments to curried function needn't be provided on at a time.
+ For example, if <code>f</code> is a ternary function, and <code>local g = curry(f)</code>,
+ then the following are equivalent:</p>
+
+<ul>
+    <li><code>g(1)(2)(3)</code></li>
+    <li><code>g(1, 2)(3)</code></li>
+    <li><code>g(1)(2, 3)</code></li>
+    <li><code>g(1, 2, 3)</code></li>
+</ul>
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">f</span>
+            <span class="types"><span class="type">function</span></span>
+         The function to curry.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">function</span></span>
+        A new, curried function.
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="index.html#curryN">curryN</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "curryN"></a>
+    <strong>curryN (arity, f)</strong>
+    </dt>
+    <dd>
+
+<p><code>number -&gt; ((a, b) -&gt; c) -&gt; a -&gt; b -&gt; c</code>. </p>
+
+<p> Returns a curried equivalent of the provided function, with a
+ specified arity. Arguments to curried function needn't be
+ provided on at a time. For example, if <code>f</code> is a ternary function,
+ and <code>local g = curryN(3, f)</code>, then the following are equivalent:</p>
+
+<ul>
+    <li><code>g(1)(2)(3)</code></li>
+    <li><code>g(1, 2)(3)</code></li>
+    <li><code>g(1)(2, 3)</code></li>
+    <li><code>g(1, 2, 3)</code></li>
+</ul>
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">arity</span>
+            <span class="types"><span class="type">number</span></span>
+         The arity for the returned function.
+        </li>
+        <li><span class="parameter">f</span>
+            <span class="types"><span class="type">function</span></span>
+         The function to curry.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">function</span></span>
+        A new, curried function.
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="index.html#curryN">curryN</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "flip"></a>
+    <strong>flip (f)</strong>
+    </dt>
+    <dd>
+    <code>(a -&gt; b -&gt; c) -&gt; b -&gt; a -&gt; c</code>. </p>
+
+<p> Returns a new function with the order of the first two arguments reversed.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">f</span>
+            <span class="types"><span class="type">function</span></span>
+         The function to flip.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">function</span></span>
+        A new, flipped function.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "partial"></a>
+    <strong>partial (f, args)</strong>
+    </dt>
+    <dd>
+    <code>((a, b, ...) -&gt; z) -&gt; [a, b, ...] -&gt; ((c, d, ...) -&gt; z)</code>. </p>
+
+<p> Takes a function <code>f</code> and a list of arguments, and returns a function <code>g</code>.
+ When applied, <code>g</code> returns the result of applying <code>f</code> to the arguments
+ provided initially followed by the arguments provided to <code>g</code>.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">f</span>
+            <span class="types"><span class="type">function</span></span>
+         The function to apply partially.
+        </li>
+        <li><span class="parameter">args</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         The args to apply to the <code>f</code>.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">function</span></span>
+        A new, partially applied function.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "pipe"></a>
+    <strong>pipe (...)</strong>
+    </dt>
+    <dd>
+    <code>((a -&gt; b), ..., (y -&gt; z)) -&gt; a -&gt; z</code>. </p>
+
+<p> Performs left-to-right function composition. The leftmost
+ function may have any arity. The remaining functions must be unary.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">...</span>
+            <span class="types"><span class="type">function</span></span>
+         The functions to pipe.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">function</span></span>
+        A new, piped function. (<em>Not automatically curried.</em>)
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="index.html#compose">compose</a>
+    </ul>
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="List"></a>List</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "concat"></a>
+    <strong>concat (fst, snd)</strong>
+    </dt>
+    <dd>
+    <code>[a] -&gt; [a] -&gt; [a]</code>. </p>
+
+<p> Concatenates two lists.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">fst</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+
+
+
+        </li>
+        <li><span class="parameter">snd</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+
+
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+        A new list contained elements of <code>fst</code> followed by elements of <code>snd</code>.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "head"></a>
+    <strong>head (list)</strong>
+    </dt>
+    <dd>
+    <code>[a] -&gt; a | nil</code>. </p>
+
+<p> Returns the first element of the given list.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">list</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         The original list.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">any</span></span>
+        The first element of <code>list</code>, or <code>nil</code> if <code>list</code> is empty.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "init"></a>
+    <strong>init (list)</strong>
+    </dt>
+    <dd>
+    <code>[a] -&gt; [a]</code>. </p>
+
+<p> Returns all but the last element of the given list.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">list</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         The original list.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+        A new list containing all but the last element of <code>list</code>.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "last"></a>
+    <strong>last (list)</strong>
+    </dt>
+    <dd>
+    <code>[a] -&gt; a | nil</code>. </p>
+
+<p> Returns the last element of the given list.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">list</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         The original list.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">any</span></span>
+        The last element of <code>list</code>, or <code>nil</code> if <code>list</code> is empty.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "map"></a>
+    <strong>map (f, list)</strong>
+    </dt>
+    <dd>
+    <code>(a -&gt; b) -&gt; [a] -&gt; [b]</code>. </p>
+
+<p> Takes a function and a list, applies the function to each of the list's
+ values, and returns a list of the same shape.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">f</span>
+            <span class="types"><span class="type">function</span></span>
+         The function to be called on every element of <code>list</code>.
+        </li>
+        <li><span class="parameter">list</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         The list to iterate over.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+        The new list.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "reduce"></a>
+    <strong>reduce (f, acc, list)</strong>
+    </dt>
+    <dd>
+    <code>(b -&gt; a -&gt; b) -&gt; b -&gt; [a] -&gt; b</code>. </p>
+
+<p> Returns a single item by iterating through a list, successively calling
+ the iterator function and passing it an accumulator value and the current
+ value from the list, and then passing the result to the next call.</p>
+
+<p> The iterator function receives two values: <code>(acc, value)</code>.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">f</span>
+            <span class="types"><span class="type">function</span></span>
+         The iterator function.
+        </li>
+        <li><span class="parameter">acc</span>
+            <span class="types"><span class="type">any</span></span>
+         The accumulator value.
+        </li>
+        <li><span class="parameter">list</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         The list to iterate over.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">any</span></span>
+        The final, accumulated value.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "reverse"></a>
+    <strong>reverse (list)</strong>
+    </dt>
+    <dd>
+    <code>[a] -&gt; [a]</code>. </p>
+
+<p> Returns a new list with the elements in reverse order.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">list</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         The list to reverse.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+        A new, reversed list.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "tail"></a>
+    <strong>tail (list)</strong>
+    </dt>
+    <dd>
+    <code>[a] -&gt; [a]</code>. </p>
+
+<p> Returns all but the first element of the given list.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">list</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         The original list.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+        A new list containing all but the first element of <code>list</code>.
+    </ol>
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Table"></a>Table</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "evolve"></a>
+    <strong>evolve (transforms, table)</strong>
+    </dt>
+    <dd>
+    <code>{ s = (a -&gt; a) } -&gt; { s = a } -&gt; { s = a }</code>. </p>
+
+<p> Creates a new table by recursively evolving a shallow copy of <a href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a>,
+ according to the transform functions. All non-primitive properties
+ are copied by reference.</p>
+
+<p> A transform function will not be invoked if its corresponding key
+ does not exist in the evolved table.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">transforms</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         The table specifying transform functions to apply.
+        </li>
+        <li><span class="parameter">table</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         The table to transform.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+        A new, transformed table.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "pick"></a>
+    <strong>pick (keys, table)</strong>
+    </dt>
+    <dd>
+    <code>[string] -&gt; { s = a } -&gt; { s = a }</code>. </p>
+
+<p> Returns a partial copy of an object containing only the keys specified.
+ If the key does not exist, the property is ignored.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">keys</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         List of keys to copy onto a new table.
+        </li>
+        <li><span class="parameter">table</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         The table to copy from.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+        A new table with only properties from <code>keys</code> on it.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "prop"></a>
+    <strong>prop (key, table)</strong>
+    </dt>
+    <dd>
+    <code>string -&gt; { s = a } -&gt; a | nil</code>. </p>
+
+<p> Returns the indicated property of a table, if it exists.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">key</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         The property to access.
+        </li>
+        <li><span class="parameter">table</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         The table to query.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">any</span></span>
+        The value of that property, or <code>nil</code>.
+    </ol>
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Type"></a>Type</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "is"></a>
+    <strong>is (type, a)</strong>
+    </dt>
+    <dd>
+    <code>string -&gt; a -&gt; boolean</code>. </p>
+
+<p> Check if a value is of the specified type.  Calls through to the builtin <a href="http://devdocs.io/lua~5.3/index#pdf-type"><a href="https://www.lua.org/manual/5.2/manual.html#pdf-type">type</a></a> function.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">type</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         Can be <code>&quot;nil&quot;</code> (a string, not the value nil), <code>&quot;number&quot;</code>, <code>&quot;string&quot;</code>, <code>&quot;boolean&quot;</code>, <code>&quot;table&quot;</code>, <code>&quot;function&quot;</code>, <code>&quot;thread&quot;</code>, or <code>&quot;userdata&quot;</code>.
+        </li>
+        <li><span class="parameter">a</span>
+            <span class="types"><span class="type">any</span></span>
+         The value to check.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">boolean</span></span>
+        True if <code>type(a)</code> matches the specified type.
+    </ol>
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2017-02-02 16:46:28 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

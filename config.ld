@@ -1,0 +1,9 @@
+all=false
+description='A practical functional library for lua'
+dir='docs'
+file='squirrel.lua'
+format='markdown'
+project='squirrel'
+--readme='readme.md'
+sort=true
+title='squirrel'
