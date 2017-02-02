@@ -5,7 +5,7 @@ source = {
    tag = version
 }
 description = {
-   summary = "A practical functional library for lua",
+   summary = "A practical functional library for Lua",
    homepage = "https://flintinatux.github.io/squirrel",
    license = "MIT"
 }

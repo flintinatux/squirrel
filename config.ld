@@ -1,5 +1,5 @@
 all=false
-description='A practical functional library for lua'
+description='A practical functional library for Lua'
 dir='docs'
 file='squirrel.lua'
 format='markdown'

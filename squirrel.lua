@@ -1,4 +1,4 @@
---- *A practical functional library for lua*<br/>
+--- *A practical functional library for Lua*<br/>
 -- Source on [Github](http://github.com/flintinatux/squirrel)
 -- @author [Scott McCormack](http://github.com/flintinatux)
 -- @copyright 2017
@@ -10,27 +10,29 @@ local getinfo = debug.getinfo
 local insert, remove, unpack = table.insert, table.remove, table.unpack
 local ipairs, next, pairs = ipairs, next, pairs
 
+local _assign, _cloneList, _cloneTable, _curryN, _length
+
 local add, compose, concat, curry, curryN, flip, evolve, head, init, is, last, map, partial, pick, pipe, prop, reduce, reverse, tail
 
 -- Internal
 
-function _assign(a, b)
+_assign = function(a, b)
   for k, v in pairs(b) do a[k] = v end
   return a
 end
 
-function _cloneList(a)
+_cloneList = function(a)
   local b = {}
   for k, v in ipairs(a) do insert(b, v) end
   return b
 end
 
-function _cloneTable(a)
+_cloneTable = function(a)
   local b = {}
   return _assign(b, a)
 end
 
-function _curryN(n, f)
+_curryN = function(n, f)
   if n <= 1 then return f end
   return function(...)
     local args = {...}
@@ -42,9 +44,11 @@ function _curryN(n, f)
   end
 end
 
-function _length(f)
+_length = function(f)
   return getinfo(f, 'u').nparams
 end
+
+-- API
 
 --- `number -> number -> number`.
 --
@@ -335,6 +339,8 @@ tail = function(a)
   remove(b, 1)
   return b
 end
+
+-- Module
 
 local squirrel = {
   add     = add,
