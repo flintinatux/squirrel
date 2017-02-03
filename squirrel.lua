@@ -1,4 +1,4 @@
---- *A practical functional library for Lua*<br/>
+--- *A nimble functional library for Lua*<br/>
 -- Source on [Github](http://github.com/flintinatux/squirrel)
 -- @author [Scott McCormack](http://github.com/flintinatux)
 -- @copyright 2017
@@ -6,32 +6,36 @@
 -- @release 0.0.1
 -- @module squirrel
 
+local assert, ipairs, next, pairs = assert, ipairs, next, pairs
 local getinfo = debug.getinfo
 local insert, remove, unpack = table.insert, table.remove, table.unpack
-local ipairs, next, pairs = ipairs, next, pairs
 
-local _assign, _cloneList, _cloneTable, _curryN, _length
+local _assign, _check, _cloneList, _cloneTable, _curryN, _identity, _length, _validate
 
-local add, compose, concat, curry, curryN, flip, evolve, head, init, is, last, map, partial, pick, pipe, prop, reduce, reverse, tail
+local add, any, compose, concat, curry, curryN, flip, equals, evolve, head, identity, init, is, last, map, partial, pick, pipe, prop, reduce, reverse, tail
 
 -- Internal
 
+-- `({ s = a }, { s = a }) -> { s = a }`.
 _assign = function(a, b)
   for k, v in pairs(b) do a[k] = v end
   return a
 end
 
+-- `[a] -> [a]`.
 _cloneList = function(a)
   local b = {}
   for k, v in ipairs(a) do insert(b, v) end
   return b
 end
 
+-- `{ s = a } -> { s = a }`.
 _cloneTable = function(a)
   local b = {}
   return _assign(b, a)
 end
 
+-- `(number -> ((a, b) -> c)) -> a -> b -> c`
 _curryN = function(n, f)
   if n <= 1 then return f end
   return function(...)
@@ -44,9 +48,28 @@ _curryN = function(n, f)
   end
 end
 
+-- `a -> a`.
+_identity = function(...)
+  return ...
+end
+
+-- `function -> number`.
 _length = function(f)
   return getinfo(f, 'u').nparams
 end
+
+-- `(string | [string]) -> string -> a -> a`.
+_validate = _curryN(3, not _DEBUG and _identity or
+  function(expected, err, val)
+    local valType = type(val)
+    if (type(expected) == 'table') then
+      assert(valType == 'table', err)
+      map(_validate(expected[1], err), val)
+    else
+      assert(valType == expected, err)
+    end
+    return val
+  end)
 
 -- API
 
@@ -59,7 +82,27 @@ end
 -- @tparam number b
 -- @treturn number The sum of the two numbers.
 add = _curryN(2, function(a, b)
+  _validate('number', 'add : 1st arg must be a number', a)
+  _validate('number', 'add : 2nd arg must be a number', b)
   return a + b
+end)
+
+--- `(a -> boolean) -> [a] -> boolean`.
+--
+-- Returns `true` if at least one element in the list matches the predicate,
+-- `false` otherwise.
+-- @function any
+-- @within List
+-- @tparam function pred The predicate function.
+-- @tparam table list The list to consider.
+-- @treturn boolean Boolean `true` if the predicate is satisfied by at least one element, `false` otherwise.
+any = _curryN(2, function(pred, list)
+  _validate('function', 'any : 1st arg must be a function', pred)
+  _validate('table', 'any : 2nd arg must be a list', list)
+  for i, v in ipairs(list) do
+    if pred(v) then return true end
+  end
+  return false
 end)
 
 --- `((y -> z), ..., (a -> b)) -> a -> z`.
@@ -128,6 +171,19 @@ end
 -- @see curryN
 curryN = _curryN(2, _curryN)
 
+--- `a -> b -> boolean`.
+--
+-- Returns `true` if its arguments are equivalent, `false` otherwise, based on
+-- Lua equality (`==`).
+-- @function equals
+-- @within Relation
+-- @tparam any a
+-- @tparam any b
+-- @treturn boolean Boolean `true` if its arguments are equivalent, `false` otherwise.
+equals = _curryN(2, function(a, b)
+  return a == b
+end)
+
 --- `{ s = (a -> a) } -> { s = a } -> { s = a }`.
 --
 -- Creates a new table by recursively evolving a shallow copy of `table`,
@@ -176,6 +232,16 @@ end
 head = function(list)
   return list[1]
 end
+
+--- `a -> a`.
+--
+-- A function that simply returns the parameters supplied to it.  Accepts
+-- multiple input values, since Lua supports multiple return values.
+-- @function identity
+-- @within Function
+-- @tparam any x The value(s) to return.
+-- @treturn any The input value(s).
+identity = _identity
 
 --- `[a] -> [a]`.
 --
@@ -343,25 +409,28 @@ end
 -- Module
 
 local squirrel = {
-  add     = add,
-  compose = compose,
-  concat  = concat,
-  curry   = curry,
-  curryN  = curryN,
-  evolve  = evolve,
-  flip    = flip,
-  head    = head,
-  init    = init,
-  is      = is,
-  last    = last,
-  map     = map,
-  partial = partial,
-  pick    = pick,
-  pipe    = pipe,
-  prop    = prop,
-  reduce  = reduce,
-  reverse = reverse,
-  tail    = tail
+  add      = add,
+  any      = any,
+  compose  = compose,
+  concat   = concat,
+  curry    = curry,
+  curryN   = curryN,
+  equals   = equals,
+  evolve   = evolve,
+  flip     = flip,
+  head     = head,
+  identity = identity,
+  init     = init,
+  is       = is,
+  last     = last,
+  map      = map,
+  partial  = partial,
+  pick     = pick,
+  pipe     = pipe,
+  prop     = prop,
+  reduce   = reduce,
+  reverse  = reverse,
+  tail     = tail
 }
 
 squirrel.import = function(ctx)

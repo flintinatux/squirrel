@@ -18,4 +18,4 @@ min:
 	@luamin -f squirrel.lua > squirrel_min.lua
 
 test:
-	@busted -v -o plainTerminal spec/
+	@busted -v -o plainTerminal --helper=spec/helper.lua spec/
