@@ -1,6 +1,4 @@
 DEV_ROCKS = busted ldoc luacheck penlight
-BUSTED_ARGS ?= -v
-TEST_CMD ?= bin/busted $(BUSTED_ARGS)
 
 dev: install
 	@for rock in $(DEV_ROCKS) ; do \
@@ -18,3 +16,6 @@ install:
 
 min:
 	@luamin -f squirrel.lua > squirrel_min.lua
+
+test:
+	@busted -v -o plainTerminal spec/
