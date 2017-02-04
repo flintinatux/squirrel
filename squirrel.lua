@@ -7,14 +7,17 @@
 -- @module squirrel
 
 local assert, ipairs, next, pairs = assert, ipairs, next, pairs
-local getinfo = debug.getinfo
+local format, match = string.format, string.match
+local getinfo, getlocal = debug.getinfo, debug.getlocal
 local insert, remove, unpack = table.insert, table.remove, table.unpack
 
-local _assign, _check, _cloneList, _cloneTable, _curryN, _identity, _length, _validate
+local _assign, _check, _cloneList, _cloneTable, _curryN, _length, _noop, _ord, _ords, _validate
 
 local add, any, compose, concat, curry, curryN, flip, equals, evolve, head, identity, init, is, last, map, partial, pick, pipe, prop, reduce, reverse, tail
 
 -- Internal
+
+_ords = { '1st', '2nd', '3rd' }
 
 -- `({ s = a }, { s = a }) -> { s = a }`.
 _assign = function(a, b)
@@ -37,7 +40,7 @@ end
 
 -- `(number -> ((a, b) -> c)) -> a -> b -> c`
 _curryN = function(n, f)
-  if n <= 1 then return f end
+  if n < 1 then return f end
   return function(...)
     local args = {...}
     if #args < n then
@@ -48,28 +51,37 @@ _curryN = function(n, f)
   end
 end
 
--- `a -> a`.
-_identity = function(...)
-  return ...
-end
-
 -- `function -> number`.
 _length = function(f)
   return getinfo(f, 'u').nparams
 end
 
--- `(string | [string]) -> string -> a -> a`.
-_validate = _curryN(3, not _DEBUG and _identity or
-  function(expected, err, val)
+-- `* -> ()`.
+_noop = function() end
+
+-- `number -> string`.
+_ord = function(i)
+  return _ords[i] or format('%sth', i)
+end
+
+-- `string -> string... -> ()`
+_validate = _curryN(2, not _DEBUG and _noop or function(func, ...)
+  for i, t in ipairs({...}) do
+    local inner = match(t, '^%[(%a+)%]$')
+    local name, val = getlocal(2, i)
     local valType = type(val)
-    if (type(expected) == 'table') then
+    if (inner) then
+      local err = format('%s: %s arg must be a list of %ss', func, _ord(i), inner)
       assert(valType == 'table', err)
-      map(_validate(expected[1], err), val)
+      for j, v in ipairs(val) do
+        assert(type(v) == inner, err)
+      end
     else
-      assert(valType == expected, err)
+      local err = format('%s: %s arg must be a %s', func, _ord(i), t)
+      assert(valType == t, err)
     end
-    return val
-  end)
+  end
+end)
 
 -- API
 
@@ -82,8 +94,7 @@ _validate = _curryN(3, not _DEBUG and _identity or
 -- @tparam number b
 -- @treturn number The sum of the two numbers.
 add = _curryN(2, function(a, b)
-  _validate('number', 'add : 1st arg must be a number', a)
-  _validate('number', 'add : 2nd arg must be a number', b)
+  _validate('add', 'number', 'number')
   return a + b
 end)
 
@@ -97,8 +108,7 @@ end)
 -- @tparam table list The list to consider.
 -- @treturn boolean Boolean `true` if the predicate is satisfied by at least one element, `false` otherwise.
 any = _curryN(2, function(pred, list)
-  _validate('function', 'any : 1st arg must be a function', pred)
-  _validate('table', 'any : 2nd arg must be a list', list)
+  _validate('any', 'function', 'table')
   for i, v in ipairs(list) do
     if pred(v) then return true end
   end
@@ -241,7 +251,9 @@ end
 -- @within Function
 -- @tparam any x The value(s) to return.
 -- @treturn any The input value(s).
-identity = _identity
+identity = function(...)
+  return ...
+end
 
 --- `[a] -> [a]`.
 --
@@ -320,6 +332,7 @@ end)
 -- @tparam table table The table to copy from.
 -- @treturn table A new table with only properties from `keys` on it.
 pick = _curryN(2, function(keys, a)
+  _validate('pick', '[string]', 'table')
   local b = {}
   for i, key in ipairs(keys) do b[key] = a[key] end
   return b

@@ -19,12 +19,12 @@ describe('any', function()
   it('1st arg must be a function', function()
     assert.has_error(
       partial(any, { true, list }),
-      'any : 1st arg must be a function')
+      'any: 1st arg must be a function')
   end)
 
-  it('2nd arg must be a list', function()
+  it('2nd arg must be a table', function()
     assert.has_error(
       partial(any, { is('string'), 1 }),
-      'any : 2nd arg must be a list')
+      'any: 2nd arg must be a table')
   end)
 end)

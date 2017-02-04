@@ -13,10 +13,12 @@ describe('add', function()
   it('1st arg must be a number', function()
     assert.has_error(
       partial(add, { '1', 2 }),
-      'add : 1st arg must be a number')
+      'add: 1st arg must be a number')
   end)
 
   it('2nd arg must be a number', function()
-    assert.has_error(partial(add, { 1, '2' }), 'add : 2nd arg must be a number')
+    assert.has_error(
+      partial(add, { 1, '2' }),
+      'add: 2nd arg must be a number')
   end)
 end)
