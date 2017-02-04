@@ -191,6 +191,7 @@ end)
 -- @treturn function A new, curried function.
 -- @see curryN
 curry = function(f)
+  _validate('curry', 'function')
   return _curryN(_length(f), f)
 end
 
