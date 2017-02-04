@@ -7,7 +7,7 @@
 -- @module squirrel
 
 local assert, ipairs, next, pairs = assert, ipairs, next, pairs
-local format, match = string.format, string.match
+local format, len, match = string.format, string.len, string.match
 local getinfo, getlocal = debug.getinfo, debug.getlocal
 local insert, remove, unpack = table.insert, table.remove, table.unpack
 
@@ -64,21 +64,25 @@ _ord = function(i)
   return _ords[i] or format('%sth', i)
 end
 
--- `string -> string... -> ()`
+-- `string -> ...string -> ()`
 _validate = _curryN(2, not _DEBUG and _noop or function(func, ...)
   for i, t in ipairs({...}) do
     local inner = match(t, '^%[(%a+)%]$')
     local name, val = getlocal(2, i)
-    local valType = type(val)
     if (inner) then
-      local err = format('%s: %s arg must be a list of %ss', func, _ord(i), inner)
-      assert(valType == 'table', err)
-      for j, v in ipairs(val) do
-        assert(type(v) == inner, err)
+      local err = format('%s: %s arg must be a list', func, _ord(i))
+      err = len(inner) <= 1 and err or err .. format(' of %ss', inner)
+      assert(type(val) == 'table', err)
+      if (len(inner) > 1) then
+        for j, v in ipairs(val) do
+          assert(type(v) == inner, err)
+        end
       end
     else
-      local err = format('%s: %s arg must be a %s', func, _ord(i), t)
-      assert(valType == t, err)
+      if (len(t) > 1) then
+        local err = format('%s: %s arg must be a %s', func, _ord(i), t)
+        assert(type(val) == t, err)
+      end
     end
   end
 end)
@@ -108,7 +112,7 @@ end)
 -- @tparam table list The list to consider.
 -- @treturn boolean Boolean `true` if the predicate is satisfied by at least one element, `false` otherwise.
 any = _curryN(2, function(pred, list)
-  _validate('any', 'function', 'table')
+  _validate('any', 'function', '[a]')
   for i, v in ipairs(list) do
     if pred(v) then return true end
   end
@@ -137,6 +141,7 @@ end
 -- @tparam table snd
 -- @treturn table A new list contained elements of `fst` followed by elements of `snd`.
 concat = _curryN(2, function(a, b)
+  _validate('concat', '[a]', '[a]')
   local c = _cloneList(a)
   for i, v in ipairs(b) do insert(c, v) end
   return c
