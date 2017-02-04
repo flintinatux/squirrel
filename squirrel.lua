@@ -113,6 +113,23 @@ end)
 
 --- `(a -> boolean) -> [a] -> boolean`.
 --
+-- Returns `true` if all elements in the list match the predicate,
+-- `false` otherwise.
+-- @function all
+-- @within List
+-- @tparam function pred The predicate function.
+-- @tparam table list The list to consider.
+-- @treturn boolean Boolean `true` if the predicate is satisfied by all elements, `false` otherwise.
+all = _curryN(2, function(pred, list)
+  _validate('all', 'function', '[a]')
+  for i, v in ipairs(list) do
+    if not pred(v) then return false end
+  end
+  return true
+end)
+
+--- `(a -> boolean) -> [a] -> boolean`.
+--
 -- Returns `true` if at least one element in the list matches the predicate,
 -- `false` otherwise.
 -- @function any
