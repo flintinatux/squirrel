@@ -1,5 +1,7 @@
 DEV_ROCKS = busted inspect ldoc luacheck penlight
 
+build: test doc min
+
 dev:
 	@for rock in $(DEV_ROCKS) ; do \
 		if ! luarocks list | grep $$rock > /dev/null ; then \
@@ -10,6 +12,9 @@ dev:
     fi \
 	done;
 	@yarn global add luamin
+
+doc:
+	@ldoc .
 
 install:
 	@luarocks make
