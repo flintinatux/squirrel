@@ -1,5 +1,4 @@
-local s = require('squirrel')
-local partial, pick = s.partial, s.pick
+require('squirrel').import()
 
 describe('pick', function()
   local orig = { color = 'red', name = 'Sam' }

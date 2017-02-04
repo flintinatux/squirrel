@@ -1,6 +1,6 @@
-DEV_ROCKS = busted ldoc luacheck penlight
+DEV_ROCKS = busted inspect ldoc luacheck penlight
 
-dev: install
+dev:
 	@for rock in $(DEV_ROCKS) ; do \
 		if ! luarocks list | grep $$rock > /dev/null ; then \
       echo $$rock not found, installing via luarocks... ; \

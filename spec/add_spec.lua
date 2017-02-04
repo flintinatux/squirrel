@@ -1,5 +1,4 @@
-local s = require('squirrel')
-local add, partial = s.add, s.partial
+require('squirrel').import()
 
 describe('add', function()
   it('adds two numbers', function()

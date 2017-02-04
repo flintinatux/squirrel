@@ -1,5 +1,4 @@
-local s = require('squirrel')
-local any, is, partial = s.any, s.is, s.partial
+require('squirrel').import()
 
 describe('any', function()
   local list = { 1, 2, 'three' }

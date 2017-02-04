@@ -13,7 +13,7 @@ local insert, remove, unpack = table.insert, table.remove, table.unpack
 
 local _assign, _check, _cloneList, _cloneTable, _curryN, _length, _noop, _ord, _ords, _validate
 
-local add, any, compose, concat, curry, curryN, flip, equals, evolve, head, identity, init, is, last, map, partial, pick, pipe, prop, reduce, reverse, tail
+local add, any, compose, concat, curry, curryN, flip, equals, evolve, head, identity, init, is, last, map, multiply, partial, pick, pipe, prop, reduce, reverse, tail
 
 -- Internal
 
@@ -69,6 +69,8 @@ _validate = _curryN(2, not _DEBUG and _noop or function(func, ...)
   for i, t in ipairs({...}) do
     local inner = match(t, '^%[(%a+)%]$')
     local name, val = getlocal(2, i)
+    local vararg = match(t, '^%.%.%.(%a+)$')
+
     if (inner) then
       local err = format('%s: %s arg must be a list', func, _ord(i))
       err = len(inner) <= 1 and err or err .. format(' of %ss', inner)
@@ -78,11 +80,18 @@ _validate = _curryN(2, not _DEBUG and _noop or function(func, ...)
           assert(type(v) == inner, err)
         end
       end
-    else
-      if (len(t) > 1) then
-        local err = format('%s: %s arg must be a %s', func, _ord(i), t)
-        assert(type(val) == t, err)
+    elseif (vararg and len(vararg) > 1) then
+      local err = format('%s: vararg must be all %ss', func, vararg)
+      local j = -1
+      name, val = getlocal(2, j)
+      while val do
+        assert(type(val) == vararg, err)
+        j = j - 1
+        name, val = getlocal(2, j)
       end
+    elseif (len(t) > 1) then
+      local err = format('%s: %s arg must be a %s', func, _ord(i), t)
+      assert(type(val) == t, err)
     end
   end
 end)
@@ -129,6 +138,7 @@ end)
 -- @treturn function A new, composed function. (_Not automatically curried._)
 -- @see pipe
 compose = function(...)
+  _validate('compose', '...function')
   return pipe(unpack(reverse({...})))
 end
 
@@ -311,6 +321,18 @@ map = _curryN(2, function(f, a)
   return b
 end)
 
+--- `number -> number -> number`.
+--
+-- Multiplies two numbers.
+-- @function multiply
+-- @within Math
+-- @tparam number a
+-- @tparam number b
+-- @treturn number The product of the two numbers.
+multiply = _curryN(2, function(a, b)
+  return a * b
+end)
+
 --- `((a, b, ...) -> z) -> [a, b, ...] -> ((c, d, ...) -> z)`.
 --
 -- Takes a function `f` and a list of arguments, and returns a function `g`.
@@ -442,6 +464,7 @@ local squirrel = {
   is       = is,
   last     = last,
   map      = map,
+  multiply = multiply,
   partial  = partial,
   pick     = pick,
   pipe     = pipe,

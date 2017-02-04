@@ -1,5 +1,4 @@
-local s = require('squirrel')
-local concat, partial = s.concat, s.partial
+require('squirrel').import()
 
 describe('concat', function()
   local fst = { 1, 2 }
