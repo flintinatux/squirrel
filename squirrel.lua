@@ -11,7 +11,7 @@ local format, len, match = string.format, string.len, string.match
 local getinfo, getlocal = debug.getinfo, debug.getlocal
 local insert, remove, unpack = table.insert, table.remove, table.unpack
 
-local _assign, _check, _cloneList, _cloneTable, _curryN, _length, _noop, _ord, _validate
+local _assign, _check, _cloneList, _cloneTable, _concat, _curry, _curryN, _length, _noop, _ord, _partial, _pipe, _reverse, _validate
 
 local add, any, compose, concat, curry, curryN, flip, equals, evolve, head, identity, init, is, last, map, multiply, partial, pick, pipe, prop, reduce, reverse, tail
 
@@ -38,7 +38,19 @@ _cloneTable = function(a)
   return _assign(b, a)
 end
 
--- `(number -> ((a, b) -> c)) -> a -> b -> c`
+-- `([a], [a]) -> [a]`.
+_concat = function(a, b)
+  local c = _cloneList(a)
+  for i, v in ipairs(b) do insert(c, v) end
+  return c
+end
+
+-- `((a, b) -> c) -> a -> b -> c`.
+_curry = function(f)
+  return _curryN(_length(f), f)
+end
+
+-- `(number -> ((a, b) -> c)) -> a -> b -> c`.
 _curryN = function(n, f)
   if n < 1 then return f end
   return function(...)
@@ -59,7 +71,36 @@ end
 -- `* -> ()`.
 _noop = function() end
 
--- `string -> ...string -> ()`
+-- `(((a, b, ...) -> z), [a, b, ...]) -> ((c, d, ...) -> z)`.
+_partial = function(f, args)
+  return function(...)
+    return f(unpack(_concat(args, {...})))
+  end
+end
+
+-- `((a -> b), ..., (y -> z)) -> a -> z`.
+_pipe = function(...)
+  local fs = {...}
+  local first = remove(fs, 1)
+  return function(...)
+    local val = first(...)
+    for i, f in ipairs(fs) do
+      val = f(val)
+    end
+    return val
+  end
+end
+
+-- `[a] -> [a]`.
+_reverse = function(a)
+  local b = {}
+  for i = #a, 1, -1 do
+    insert(b, a[i])
+  end
+  return b
+end
+
+-- `string -> ...string -> ()`.
 _validate = _curryN(2, not _DEBUG and _noop or function(func, ...)
   for i, t in ipairs({...}) do
     local inner  = match(t, '^%[(%a+)%]$')
@@ -161,7 +202,7 @@ end)
 -- @see pipe
 compose = function(...)
   _validate('compose', '...function')
-  return pipe(unpack(reverse({...})))
+  return _pipe(unpack(_reverse({...})))
 end
 
 --- `[a] -> [a] -> [a]`.
@@ -174,9 +215,7 @@ end
 -- @treturn table A new list contained elements of `fst` followed by elements of `snd`.
 concat = _curryN(2, function(a, b)
   _validate('concat', '[a]', '[a]')
-  local c = _cloneList(a)
-  for i, v in ipairs(b) do insert(c, v) end
-  return c
+  return _concat(a, b)
 end)
 
 --- `((a, b) -> c) -> a -> b -> c`.
@@ -197,7 +236,7 @@ end)
 -- @see curryN
 curry = function(f)
   _validate('curry', 'function')
-  return _curryN(_length(f), f)
+  return _curry(f)
 end
 
 --- `number -> ((a, b) -> c) -> a -> b -> c`.
@@ -269,7 +308,7 @@ end)
 -- @treturn function A new, flipped function.
 flip = function(f)
   _validate('flip', 'function')
-  f = curry(f)
+  f = _curry(f)
   return _curryN(2, function(a, b, ...)
     return f(b, a, ...)
   end)
@@ -379,9 +418,7 @@ end)
 -- @treturn function A new, partially applied function.
 partial = _curryN(2, function(f, args)
   _validate('partial', 'function', '[a]')
-  return function(...)
-    return f(unpack(concat(args, {...})))
-  end
+  return _partial(f, args)
 end)
 
 --- `[string] -> { s = a } -> { s = a }`.
@@ -411,15 +448,7 @@ end)
 -- @see compose
 pipe = function(...)
   _validate('pipe', '...function')
-  local fs = {...}
-  local first = remove(fs, 1)
-  return function(...)
-    local val = first(...)
-    for i, f in ipairs(fs) do
-      val = f(val)
-    end
-    return val
-  end
+  return _pipe(...)
 end
 
 --- `string -> { s = a } -> a | nil`.
@@ -465,11 +494,7 @@ end)
 -- @treturn table A new, reversed list.
 reverse = function(a)
   _validate('reverse', '[a]')
-  local b = {}
-  for i = #a, 1, -1 do
-    insert(b, a[i])
-  end
-  return b
+  return _reverse(a)
 end
 
 --- `[a] -> [a]`.
