@@ -1,6 +1,6 @@
 DEV_ROCKS = busted inspect ldoc luacheck penlight
 
-build: test doc min
+build: test lint doc min
 
 dev:
 	@for rock in $(DEV_ROCKS) ; do \
@@ -18,6 +18,9 @@ doc:
 
 install:
 	@luarocks make
+
+lint:
+	@luacheck squirrel.lua
 
 min:
 	@luamin -f squirrel.lua > squirrel_min.lua

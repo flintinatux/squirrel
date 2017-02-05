@@ -6,14 +6,14 @@
 -- @release 0.0.1
 -- @module squirrel
 
-local assert, ipairs, next, pairs = assert, ipairs, next, pairs
+local assert, ipairs, pairs = assert, ipairs, pairs
 local format, len, match = string.format, string.len, string.match
 local getinfo, getlocal = debug.getinfo, debug.getlocal
 local insert, remove, unpack = table.insert, table.remove, table.unpack
 
-local _assign, _check, _cloneList, _cloneTable, _concat, _curry, _curryN, _length, _noop, _ord, _partial, _pipe, _reverse, _validate
+local _assign, _cloneList, _concat, _curry, _curryN, _length, _noop, _ord, _partial, _pipe, _reverse, _validate
 
-local add, any, compose, concat, curry, curryN, flip, equals, evolve, head, identity, init, is, last, map, multiply, partial, pick, pipe, prop, reduce, reverse, tail
+local add, all, any, compose, concat, curry, curryN, flip, equals, evolve, head, identity, init, is, last, map, multiply, partial, pick, pipe, prop, reduce, reverse, tail
 
 -- Internal
 
@@ -28,20 +28,14 @@ end
 -- `[a] -> [a]`.
 _cloneList = function(a)
   local b = {}
-  for k, v in ipairs(a) do insert(b, v) end
+  for _, v in ipairs(a) do insert(b, v) end
   return b
-end
-
--- `{ s = a } -> { s = a }`.
-_cloneTable = function(a)
-  local b = {}
-  return _assign(b, a)
 end
 
 -- `([a], [a]) -> [a]`.
 _concat = function(a, b)
   local c = _cloneList(a)
-  for i, v in ipairs(b) do insert(c, v) end
+  for _, v in ipairs(b) do insert(c, v) end
   return c
 end
 
@@ -84,7 +78,7 @@ _pipe = function(...)
   local first = remove(fs, 1)
   return function(...)
     local val = first(...)
-    for i, f in ipairs(fs) do
+    for _, f in ipairs(fs) do
       val = f(val)
     end
     return val
@@ -108,15 +102,16 @@ _validate = _curryN(2, not _DEBUG and _noop or function(func, ...)
 
     local name, val = getlocal(2, i)
     local valType = type(val)
+    local base, err
 
     if (inner) then
-      local base = format('%s: %s arg must be list', func, _ord[i])
-      local err  = base .. format(', got %s', valType)
+      base = format('%s: %s arg must be list', func, _ord[i])
+      err  = base .. format(', got %s', valType)
       assert(valType == 'table', err)
 
       if (len(inner) > 1) then
         base = base .. format(' of %ss', inner)
-        for j, v in ipairs(val) do
+        for _, v in ipairs(val) do
           valType = type(v)
           err = base .. format(', got %s element', valType)
           assert(valType == inner, err)
@@ -124,7 +119,7 @@ _validate = _curryN(2, not _DEBUG and _noop or function(func, ...)
       end
 
     elseif (vararg and len(vararg) > 1) then
-      local base = format('%s: vararg must be all %ss', func, vararg)
+      base = format('%s: vararg must be all %ss', func, vararg)
       local j = -1
       name, val = getlocal(2, j)
       while val do
@@ -136,7 +131,7 @@ _validate = _curryN(2, not _DEBUG and _noop or function(func, ...)
       end
 
     elseif (len(t) > 1) then
-      local err = format('%s: %s arg must be %s, got %s', func, _ord[i], t, valType)
+      err = format('%s: %s arg must be %s, got %s', func, _ord[i], t, valType)
       assert(valType == t, err)
     end
   end
@@ -168,7 +163,7 @@ end)
 -- @treturn boolean Boolean `true` if the predicate is satisfied by all elements, `false` otherwise.
 all = _curryN(2, function(pred, list)
   _validate('all', 'function', '[a]')
-  for i, v in ipairs(list) do
+  for _, v in ipairs(list) do
     if not pred(v) then return false end
   end
   return true
@@ -185,7 +180,7 @@ end)
 -- @treturn boolean Boolean `true` if the predicate is satisfied by at least one element, `false` otherwise.
 any = _curryN(2, function(pred, list)
   _validate('any', 'function', '[a]')
-  for i, v in ipairs(list) do
+  for _, v in ipairs(list) do
     if pred(v) then return true end
   end
   return false
@@ -389,7 +384,7 @@ end
 map = _curryN(2, function(f, a)
   _validate('map', 'function', '[a]')
   local b = {}
-  for i, v in ipairs(a) do insert(b, f(v)) end
+  for _, v in ipairs(a) do insert(b, f(v)) end
   return b
 end)
 
@@ -433,7 +428,7 @@ end)
 pick = _curryN(2, function(keys, a)
   _validate('pick', '[string]', 'table')
   local b = {}
-  for i, key in ipairs(keys) do b[key] = a[key] end
+  for _, key in ipairs(keys) do b[key] = a[key] end
   return b
 end)
 
@@ -479,7 +474,7 @@ end)
 -- @treturn any The final, accumulated value.
 reduce = _curryN(3, function(f, acc, list)
   _validate('reduce', 'function', 'a', '[a]')
-  for i, val in ipairs(list) do
+  for _, val in ipairs(list) do
     acc = f(acc, val)
   end
   return acc
@@ -515,6 +510,7 @@ end
 
 local squirrel = {
   add      = add,
+  all      = all,
   any      = any,
   compose  = compose,
   concat   = concat,
