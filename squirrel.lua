@@ -13,7 +13,7 @@ local insert, remove, unpack = table.insert, table.remove, table.unpack
 
 local _assign, _cloneList, _concat, _curry, _curryN, _length, _noop, _ord, _partial, _pipe, _reverse, _validate
 
-local add, all, any, compose, concat, curry, curryN, flip, equals, evolve, head, identity, init, is, last, map, multiply, partial, pick, pipe, prop, reduce, reverse, tail
+local add, all, any, compose, concat, curry, curryN, flip, equals, evolve, head, identity, ifElse, init, is, last, map, multiply, partial, pick, pipe, prop, reduce, reverse, tail
 
 -- Internal
 
@@ -333,6 +333,23 @@ identity = function(...)
   return ...
 end
 
+--- `(a -> boolean) -> (a -> b) -> (a -> c) -> a -> b | c`.
+--
+-- Creates a function that will process either the `onTrue` or the `onFalse`
+-- function depending upon the result of the predicate.
+-- @function ifElse
+-- @within Logic
+-- @tparam function pred The predicate function.
+-- @tparam function onTrue The function to call if `true`.
+-- @tparam function onFalse The function to call if `false`.
+-- @treturn any The result of calling either `onTrue` or `onFalse`.
+ifElse = _curryN(3, function(pred, onTrue, onFalse)
+  _validate('ifElse', 'function', 'function', 'function')
+  return function(...)
+    return pred(...) and onTrue(...) or onFalse(...)
+  end
+end)
+
 --- `[a] -> [a]`.
 --
 -- Returns all but the last element of the given list.
@@ -521,6 +538,7 @@ local squirrel = {
   flip     = flip,
   head     = head,
   identity = identity,
+  ifElse   = ifElse,
   init     = init,
   is       = is,
   last     = last,
