@@ -212,7 +212,10 @@ end
 -- @tparam function f The function to curry.
 -- @treturn function A new, curried function.
 -- @see curryN
-curryN = _curryN(2, _curryN)
+curryN = _curryN(2, function(n, f)
+  _validate('curryN', 'number', 'function')
+  return _curryN(n, f)
+end)
 
 --- `a -> b -> boolean`.
 --
