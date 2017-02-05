@@ -1,5 +1,3 @@
-require('squirrel').import()
-
 describe('add', function()
   it('adds two numbers', function()
     assert.are.equal(add(1, 2), 3)
@@ -9,15 +7,15 @@ describe('add', function()
     assert.are.equal(add(1, 2), add(1)(2))
   end)
 
-  it('1st arg must be a number', function()
+  it('first arg must be number', function()
     assert.has_error(
       partial(add, { '1', 2 }),
-      'add: 1st arg must be a number')
+      'add: first arg must be number, got string')
   end)
 
-  it('2nd arg must be a number', function()
+  it('second arg must be number', function()
     assert.has_error(
       partial(add, { 1, '2' }),
-      'add: 2nd arg must be a number')
+      'add: second arg must be number, got string')
   end)
 end)

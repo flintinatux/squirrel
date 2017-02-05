@@ -1,5 +1,3 @@
-require('squirrel').import()
-
 describe('all', function()
   local good = { 1, 2, 3 }
   local bad = { 1, 2, '3' }
@@ -16,15 +14,15 @@ describe('all', function()
     assert.is_true(all(is('number'))(good))
   end)
 
-  it('1st arg must be a function', function()
+  it('first arg must be function', function()
     assert.has_error(
       partial(all, { 'number', good }),
-      'all: 1st arg must be a function')
+      'all: first arg must be function, got string')
   end)
 
-  it('2nd arg must be a list', function()
+  it('second arg must be list', function()
     assert.has_error(
       partial(all, { is('number'), 'good' }),
-      'all: 2nd arg must be a list')
+      'all: second arg must be list, got string')
   end)
 end)

@@ -1,5 +1,3 @@
-require('squirrel').import()
-
 describe('curry', function()
   local sum3 = curry(function(a, b, c)
     return a + b + c
@@ -12,9 +10,9 @@ describe('curry', function()
     assert.is.equal(sum3(1)(2)(3), 6)
   end)
 
-  it('1st arg must be a function', function()
+  it('first arg must be function', function()
     assert.has_error(
       partial(curry, { 'function' }),
-      'curry: 1st arg must be a function')
+      'curry: first arg must be function, got string')
   end)
 end)

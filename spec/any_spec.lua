@@ -1,5 +1,3 @@
-require('squirrel').import()
-
 describe('any', function()
   local list = { 1, 2, 'three' }
 
@@ -15,15 +13,15 @@ describe('any', function()
     assert.is_true(any(is('string'))(list))
   end)
 
-  it('1st arg must be a function', function()
+  it('first arg must be function', function()
     assert.has_error(
       partial(any, { true, list }),
-      'any: 1st arg must be a function')
+      'any: first arg must be function, got boolean')
   end)
 
-  it('2nd arg must be a list', function()
+  it('second arg must be list', function()
     assert.has_error(
       partial(any, { is('string'), 1 }),
-      'any: 2nd arg must be a list')
+      'any: second arg must be list, got number')
   end)
 end)

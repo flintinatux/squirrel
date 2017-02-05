@@ -1,5 +1,3 @@
-require('squirrel').import()
-
 describe('pick', function()
   local orig = { color = 'red', name = 'Sam' }
 
@@ -11,15 +9,19 @@ describe('pick', function()
     assert.is.same(pick({'color'})(orig), { color = 'red' })
   end)
 
-  it('1st arg must be a list of strings', function()
+  it('first arg must be list of strings', function()
     assert.has_error(
       partial(pick, { 'color', orig }),
-      'pick: 1st arg must be a list of strings')
+      'pick: first arg must be list, got string')
+
+    assert.has_error(
+      partial(pick, { { 1 }, orig }),
+      'pick: first arg must be list of strings, got number element')
   end)
 
-  it('2nd arg must be a table', function()
+  it('second arg must be table', function()
     assert.has_error(
       partial(pick, { {'color'}, 'red' }),
-      'pick: 2nd arg must be a table')
+      'pick: second arg must be table, got string')
   end)
 end)

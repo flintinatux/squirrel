@@ -11,13 +11,13 @@ local format, len, match = string.format, string.len, string.match
 local getinfo, getlocal = debug.getinfo, debug.getlocal
 local insert, remove, unpack = table.insert, table.remove, table.unpack
 
-local _assign, _check, _cloneList, _cloneTable, _curryN, _length, _noop, _ord, _ords, _validate
+local _assign, _check, _cloneList, _cloneTable, _curryN, _length, _noop, _ord, _validate
 
 local add, any, compose, concat, curry, curryN, flip, equals, evolve, head, identity, init, is, last, map, multiply, partial, pick, pipe, prop, reduce, reverse, tail
 
 -- Internal
 
-_ords = { '1st', '2nd', '3rd' }
+_ord = { 'first', 'second', 'third' }
 
 -- `({ s = a }, { s = a }) -> { s = a }`.
 _assign = function(a, b)
@@ -59,39 +59,44 @@ end
 -- `* -> ()`.
 _noop = function() end
 
--- `number -> string`.
-_ord = function(i)
-  return _ords[i] or format('%sth', i)
-end
-
 -- `string -> ...string -> ()`
 _validate = _curryN(2, not _DEBUG and _noop or function(func, ...)
   for i, t in ipairs({...}) do
-    local inner = match(t, '^%[(%a+)%]$')
-    local name, val = getlocal(2, i)
+    local inner  = match(t, '^%[(%a+)%]$')
     local vararg = match(t, '^%.%.%.(%a+)$')
 
+    local name, val = getlocal(2, i)
+    local valType = type(val)
+
     if (inner) then
-      local err = format('%s: %s arg must be a list', func, _ord(i))
-      err = len(inner) <= 1 and err or err .. format(' of %ss', inner)
-      assert(type(val) == 'table', err)
+      local base = format('%s: %s arg must be list', func, _ord[i])
+      local err  = base .. format(', got %s', valType)
+      assert(valType == 'table', err)
+
       if (len(inner) > 1) then
+        base = base .. format(' of %ss', inner)
         for j, v in ipairs(val) do
-          assert(type(v) == inner, err)
+          valType = type(v)
+          err = base .. format(', got %s element', valType)
+          assert(valType == inner, err)
         end
       end
+
     elseif (vararg and len(vararg) > 1) then
-      local err = format('%s: vararg must be all %ss', func, vararg)
+      local base = format('%s: vararg must be all %ss', func, vararg)
       local j = -1
       name, val = getlocal(2, j)
       while val do
-        assert(type(val) == vararg, err)
+        valType = type(val)
+        err = base .. format(', got a %s', valType)
+        assert(valType == vararg, err)
         j = j - 1
         name, val = getlocal(2, j)
       end
+
     elseif (len(t) > 1) then
-      local err = format('%s: %s arg must be a %s', func, _ord(i), t)
-      assert(type(val) == t, err)
+      local err = format('%s: %s arg must be %s, got %s', func, _ord[i], t, valType)
+      assert(valType == t, err)
     end
   end
 end)
@@ -244,6 +249,7 @@ end)
 -- @tparam table table The table to transform.
 -- @treturn table A new, transformed table.
 evolve = _curryN(2, function(xfrms, obj)
+  _validate('evolve', 'table', 'table')
   local res = {}
   for key, val in pairs(obj) do
     local xfrm = xfrms[key]
@@ -262,6 +268,7 @@ end)
 -- @tparam function f The function to flip.
 -- @treturn function A new, flipped function.
 flip = function(f)
+  _validate('flip', 'function')
   f = curry(f)
   return _curryN(2, function(a, b, ...)
     return f(b, a, ...)
@@ -276,12 +283,13 @@ end
 -- @tparam table list The original list.
 -- @treturn any The first element of `list`, or `nil` if `list` is empty.
 head = function(list)
+  _validate('head', '[a]')
   return list[1]
 end
 
 --- `a -> a`.
 --
--- A function that simply returns the parameters supplied to it.  Accepts
+-- A function that simply returns the arguments supplied to it.  Accepts
 -- multiple input values, since Lua supports multiple return values.
 -- @function identity
 -- @within Function
@@ -299,6 +307,7 @@ end
 -- @tparam table list The original list.
 -- @treturn table A new list containing all but the last element of `list`.
 init = function(a)
+  _validate('init', '[a]')
   local b = _cloneList(a)
   remove(b)
   return b
@@ -313,6 +322,7 @@ end
 -- @tparam any a The value to check.
 -- @treturn boolean True if `type(a)` matches the specified type.
 is = _curryN(2, function(typestring, a)
+  _validate('is', 'string')
   return type(a) == typestring
 end)
 
@@ -324,6 +334,7 @@ end)
 -- @tparam table list The original list.
 -- @treturn any The last element of `list`, or `nil` if `list` is empty.
 last = function(list)
+  _validate('last', '[a]')
   return list[#list]
 end
 
@@ -337,6 +348,7 @@ end
 -- @tparam table list The list to iterate over.
 -- @treturn table The new list.
 map = _curryN(2, function(f, a)
+  _validate('map', 'function', '[a]')
   local b = {}
   for i, v in ipairs(a) do insert(b, f(v)) end
   return b
@@ -351,6 +363,7 @@ end)
 -- @tparam number b
 -- @treturn number The product of the two numbers.
 multiply = _curryN(2, function(a, b)
+  _validate('multiply', 'number', 'number')
   return a * b
 end)
 
@@ -365,6 +378,7 @@ end)
 -- @tparam table args The args to apply to the `f`.
 -- @treturn function A new, partially applied function.
 partial = _curryN(2, function(f, args)
+  _validate('partial', 'function', '[a]')
   return function(...)
     return f(unpack(concat(args, {...})))
   end
@@ -396,6 +410,7 @@ end)
 -- @treturn function A new, piped function. (_Not automatically curried._)
 -- @see compose
 pipe = function(...)
+  _validate('pipe', '...function')
   local fs = {...}
   local first = remove(fs, 1)
   return function(...)
@@ -416,6 +431,7 @@ end
 -- @tparam table table The table to query.
 -- @treturn any The value of that property, or `nil`.
 prop = _curryN(2, function(key, table)
+  _validate('prop', 'string', 'table')
   return table[key]
 end)
 
@@ -433,6 +449,7 @@ end)
 -- @tparam table list The list to iterate over.
 -- @treturn any The final, accumulated value.
 reduce = _curryN(3, function(f, acc, list)
+  _validate('reduce', 'function', 'a', '[a]')
   for i, val in ipairs(list) do
     acc = f(acc, val)
   end
@@ -447,6 +464,7 @@ end)
 -- @tparam table list The list to reverse.
 -- @treturn table A new, reversed list.
 reverse = function(a)
+  _validate('reverse', '[a]')
   local b = {}
   for i = #a, 1, -1 do
     insert(b, a[i])
@@ -462,6 +480,7 @@ end
 -- @tparam table list The original list.
 -- @treturn table A new list containing all but the first element of `list`.
 tail = function(a)
+  _validate('tail', '[a]')
   local b = _cloneList(a)
   remove(b, 1)
   return b

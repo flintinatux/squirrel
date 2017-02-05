@@ -1,5 +1,3 @@
-require('squirrel').import()
-
 describe('compose', function()
   local f = add(3)
   local g = multiply(2)
@@ -14,6 +12,6 @@ describe('compose', function()
   it('vararg must be all functions', function()
     assert.has_error(
       partial(compose, { f, 'g' }),
-      'compose: vararg must be all functions')
+      'compose: vararg must be all functions, got a string')
   end)
 end)

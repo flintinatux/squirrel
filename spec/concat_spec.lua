@@ -1,5 +1,3 @@
-require('squirrel').import()
-
 describe('concat', function()
   local fst = { 1, 2 }
   local snd = { 3, 4 }
@@ -12,15 +10,15 @@ describe('concat', function()
     assert.is.same(concat(fst)(snd), { 1, 2, 3, 4 })
   end)
 
-  it('1st arg must be a list', function()
+  it('first arg must be list', function()
     assert.has_error(
       partial(concat, { 'fst', snd }),
-      'concat: 1st arg must be a list')
+      'concat: first arg must be list, got string')
   end)
 
-  it('2nd arg must be a list', function()
+  it('second arg must be list', function()
     assert.has_error(
       partial(concat, { fst, 'snd' }),
-      'concat: 2nd arg must be a list')
+      'concat: second arg must be list, got string')
   end)
 end)

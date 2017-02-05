@@ -1,5 +1,3 @@
-require('squirrel').import()
-
 describe('curryN', function()
   local sum3 = curryN(3, function(a, b, c)
     return a + b + c
@@ -12,9 +10,9 @@ describe('curryN', function()
     assert.is.equal(sum3(1)(2)(3), 6)
   end)
 
-  it('1st arg must be a number', function()
+  it('first arg must be number', function()
     assert.has_error(
       partial(curryN, { '3', function() end }),
-      'curryN: 1st arg must be a number')
+      'curryN: first arg must be number, got string')
   end)
 end)
