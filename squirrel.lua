@@ -13,7 +13,7 @@ local insert, remove, unpack = table.insert, table.remove, table.unpack
 
 local _assign, _cloneList, _concat, _curry, _curryN, _length, _noop, _ord, _partial, _pipe, _reverse, _validate
 
-local add, all, any, compose, concat, curry, curryN, flip, equals, evolve, gt, head, identity, ifElse, init, is, last, lt, map, max, min, multiply, non, partial, pick, pipe, prop, reduce, reverse, tail, when
+local add, all, any, compose, concat, curry, curryN, flip, equals, evolve, gt, head, identity, ifElse, init, is, last, lt, map, max, min, multiply, non, partial, pick, pipe, prop, reduce, reverse, tail, tap, when
 
 -- Internal
 
@@ -592,6 +592,22 @@ tail = function(a)
   return b
 end
 
+--- `(a -> b) -> a -> a`.
+--
+-- Creates a new function that first runs the original function, and then
+-- returns the original arguments.
+-- @function tap
+-- @within Function
+-- @tparam function f The function to wrap. Its return value will be discarded.
+-- @treturn any A new, tapped function.
+tap = function(f)
+  _validate('tap', 'function')
+  return function(...)
+    f(...)
+    return ...
+  end
+end
+
 --- `(a -> boolean) -> (a -> b) -> a | b`.
 --
 -- Creates a function that will either process the `onTrue` or pass-through the
@@ -641,6 +657,7 @@ local squirrel = {
   reduce   = reduce,
   reverse  = reverse,
   tail     = tail,
+  tap      = tap,
   when     = when
 }
 
