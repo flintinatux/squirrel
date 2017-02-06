@@ -13,7 +13,7 @@ local insert, remove, unpack = table.insert, table.remove, table.unpack
 
 local _assign, _cloneList, _concat, _curry, _curryN, _length, _noop, _ord, _partial, _pipe, _reverse, _validate
 
-local add, all, any, compose, concat, curry, curryN, flip, equals, evolve, head, identity, ifElse, init, is, last, map, multiply, partial, pick, pipe, prop, reduce, reverse, tail
+local add, all, any, compose, concat, curry, curryN, flip, equals, evolve, head, identity, ifElse, init, is, last, map, multiply, partial, pick, pipe, prop, reduce, reverse, tail, when
 
 -- Internal
 
@@ -523,6 +523,22 @@ tail = function(a)
   return b
 end
 
+--- `(a -> boolean) -> (a -> b) -> a | b`.
+--
+-- Creates a function that will either process the `onTrue` or pass-through the
+-- original aruments depending on the predicate result.
+-- @function when
+-- @within Logic
+-- @tparam function pred The predicate function.
+-- @tparam function onTrue The function to process when `pred` returns `true`.
+-- @treturn any The result of either processing `onTrue` or passing-through the original arguments.
+when = _curryN(2, function(pred, onTrue)
+  _validate('when', 'function', 'function')
+  return function(...)
+    return pred(...) and onTrue(...) or ...
+  end
+end)
+
 -- Module
 
 local squirrel = {
@@ -550,7 +566,8 @@ local squirrel = {
   prop     = prop,
   reduce   = reduce,
   reverse  = reverse,
-  tail     = tail
+  tail     = tail,
+  when     = when
 }
 
 squirrel.import = function(ctx)
