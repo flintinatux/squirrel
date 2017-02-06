@@ -13,7 +13,7 @@ local insert, remove, unpack = table.insert, table.remove, table.unpack
 
 local _assign, _cloneList, _concat, _curry, _curryN, _length, _noop, _ord, _partial, _pipe, _reverse, _validate
 
-local add, all, any, compose, concat, curry, curryN, flip, equals, evolve, head, identity, ifElse, init, is, last, map, multiply, partial, pick, pipe, prop, reduce, reverse, tail, when
+local add, all, any, compose, concat, curry, curryN, flip, equals, evolve, head, identity, ifElse, init, is, last, map, multiply, non, partial, pick, pipe, prop, reduce, reverse, tail, when
 
 -- Internal
 
@@ -418,6 +418,21 @@ multiply = _curryN(2, function(a, b)
   return a * b
 end)
 
+--- `(a -> boolean) -> (a -> boolean)`.
+--
+-- Creates a new function that returns the logical opposite of the supplied
+-- predicate.
+-- @function non
+-- @within Logic
+-- @tparam function pred The original predicate.
+-- @treturn function A new function that returns the logical opposite of `pred`.
+non = function(pred)
+  _validate('non', 'function')
+  return function(...)
+    return not pred(...)
+  end
+end
+
 --- `((a, b, ...) -> z) -> [a, b, ...] -> ((c, d, ...) -> z)`.
 --
 -- Takes a function `f` and a list of arguments, and returns a function `g`.
@@ -560,6 +575,7 @@ local squirrel = {
   last     = last,
   map      = map,
   multiply = multiply,
+  non      = non,
   partial  = partial,
   pick     = pick,
   pipe     = pipe,
