@@ -13,7 +13,7 @@ local insert, remove, unpack = table.insert, table.remove, table.unpack
 
 local _assign, _cloneList, _concat, _curry, _curryN, _length, _noop, _ord, _partial, _pipe, _reverse, _validate
 
-local add, all, any, compose, concat, curry, curryN, flip, equals, evolve, head, identity, ifElse, init, is, last, map, multiply, non, partial, pick, pipe, prop, reduce, reverse, tail, when
+local add, all, any, compose, concat, curry, curryN, flip, equals, evolve, gt, head, identity, ifElse, init, is, last, lt, map, max, min, multiply, non, partial, pick, pipe, prop, reduce, reverse, tail, when
 
 -- Internal
 
@@ -309,6 +309,20 @@ flip = function(f)
   end)
 end
 
+--- `number -> number -> boolean`.
+--
+-- Returns `true` if the first number is greater than the second, or `false`
+-- otherwise.
+-- @function gt
+-- @within Relation
+-- @tparam number a
+-- @tparam number b
+-- @treturn boolean True if `a` is greater than `b`.
+gt = _curryN(2, function(a, b)
+  _validate('gt', 'number', 'number')
+  return a > b
+end)
+
 --- `[a] -> a | nil`.
 --
 -- Returns the first element of the given list.
@@ -389,6 +403,20 @@ last = function(list)
   return list[#list]
 end
 
+--- `number -> number -> boolean`.
+--
+-- Returns `true` if the first number is less than the second, or `false`
+-- otherwise.
+-- @function lt
+-- @within Relation
+-- @tparam number a
+-- @tparam number b
+-- @treturn boolean True if `a` is less than `b`.
+lt = _curryN(2, function(a, b)
+  _validate('lt', 'number', 'number')
+  return a < b
+end)
+
 --- `(a -> b) -> [a] -> [b]`.
 --
 -- Takes a function and a list, applies the function to each of the list's
@@ -403,6 +431,32 @@ map = _curryN(2, function(f, a)
   local b = {}
   for _, v in ipairs(a) do insert(b, f(v)) end
   return b
+end)
+
+--- `number -> number -> number`.
+--
+-- Returns the greater of two numbers.
+-- @function max
+-- @within Relation
+-- @tparam number a
+-- @tparam number b
+-- @treturn number Either `a` or `b`, whichever is greater.
+max = _curryN(2, function(a, b)
+  _validate('max', 'number', 'number')
+  return a > b and a or b
+end)
+
+--- `number -> number -> number`.
+--
+-- Returns the lesser of two numbers.
+-- @function min
+-- @within Relation
+-- @tparam number a
+-- @tparam number b
+-- @treturn number Either `a` or `b`, whichever is lesser.
+min = _curryN(2, function(a, b)
+  _validate('min', 'number', 'number')
+  return a < b and a or b
 end)
 
 --- `number -> number -> number`.
@@ -567,13 +621,17 @@ local squirrel = {
   equals   = equals,
   evolve   = evolve,
   flip     = flip,
+  gt       = gt,
   head     = head,
   identity = identity,
   ifElse   = ifElse,
   init     = init,
   is       = is,
   last     = last,
+  lt       = lt,
   map      = map,
+  max      = max,
+  min      = min,
   multiply = multiply,
   non      = non,
   partial  = partial,
