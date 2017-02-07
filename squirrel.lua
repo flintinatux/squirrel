@@ -13,7 +13,7 @@ local insert, remove, unpack = table.insert, table.remove, table.unpack
 
 local _assign, _cloneList, _concat, _curry, _curryN, _length, _noop, _ord, _partial, _pipe, _pipeR, _reverse, _validate
 
-local add, all, any, compose, composeR, concat, curry, curryN, flip, equals, evolve, gt, head, identity, ifElse, init, is, last, lt, map, max, min, multiply, non, partial, pick, pipe, pipeR, prop, reduce, reverse, tail, tap, when
+local add, all, any, compose, composeR, concat, curry, curryN, flip, equals, evolve, groupWith, gt, head, identity, ifElse, init, is, last, lt, map, max, min, multiply, non, partial, pick, pipe, pipeR, prop, reduce, reverse, tail, tap, when
 
 -- Internal
 
@@ -332,6 +332,26 @@ flip = function(f)
     return f(b, a, ...)
   end)
 end
+
+--- `((a, a) -> boolean) -> [a] -> [[a]]`.
+--
+-- Takes a list and returns a list of lists where each sublist's elements are
+-- all satisfied pairwise comparison according to the provided function.
+-- Only adjacent elements are passed to the comparison function.
+-- @function groupWith
+-- @within List
+-- @tparam function pred The predicate to compare adjacent elements.
+-- @tparam table list The list to consider.
+-- @treturn table A list that contains sublists of elements, whose concatenations are equal to the original list.
+groupWith = _curryN(2, function(pred, list)
+  _validate('groupWith', 'function', '[a]')
+  local res = { {} }
+  for i, v in ipairs(list) do
+    insert(res[#res], v)
+    if i < #list and not pred(v, list[i+1]) then insert(res, {}) end
+  end
+  return res
+end)
 
 --- `number -> number -> boolean`.
 --
@@ -664,40 +684,41 @@ end)
 -- Module
 
 local squirrel = {
-  add      = add,
-  all      = all,
-  any      = any,
-  compose  = compose,
-  composeR = composeR,
-  concat   = concat,
-  curry    = curry,
-  curryN   = curryN,
-  equals   = equals,
-  evolve   = evolve,
-  flip     = flip,
-  gt       = gt,
-  head     = head,
-  identity = identity,
-  ifElse   = ifElse,
-  init     = init,
-  is       = is,
-  last     = last,
-  lt       = lt,
-  map      = map,
-  max      = max,
-  min      = min,
-  multiply = multiply,
-  non      = non,
-  partial  = partial,
-  pick     = pick,
-  pipe     = pipe,
-  pipeR    = pipeR,
-  prop     = prop,
-  reduce   = reduce,
-  reverse  = reverse,
-  tail     = tail,
-  tap      = tap,
-  when     = when
+  add       = add,
+  all       = all,
+  any       = any,
+  compose   = compose,
+  composeR  = composeR,
+  concat    = concat,
+  curry     = curry,
+  curryN    = curryN,
+  equals    = equals,
+  evolve    = evolve,
+  flip      = flip,
+  groupWith = groupWith,
+  gt        = gt,
+  head      = head,
+  identity  = identity,
+  ifElse    = ifElse,
+  init      = init,
+  is        = is,
+  last      = last,
+  lt        = lt,
+  map       = map,
+  max       = max,
+  min       = min,
+  multiply  = multiply,
+  non       = non,
+  partial   = partial,
+  pick      = pick,
+  pipe      = pipe,
+  pipeR     = pipeR,
+  prop      = prop,
+  reduce    = reduce,
+  reverse   = reverse,
+  tail      = tail,
+  tap       = tap,
+  when      = when
 }
 
 squirrel.import = function(ctx)
