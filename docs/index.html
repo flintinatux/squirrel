@@ -124,6 +124,10 @@
 	<td class="summary"><code>((y -&gt; z), ..., (a -&gt; b)) -&gt; a -&gt; z</code>.</td>
 	</tr>
 	<tr>
+	<td class="name" nowrap><a href="#composeR">composeR (...)</a></td>
+	<td class="summary"><code>((b -&gt; a -&gt; b), ..., (b -&gt; a -&gt; b)) -&gt; (b -&gt; a -&gt; b)</code>.</td>
+	</tr>
+	<tr>
 	<td class="name" nowrap><a href="#curry">curry (f)</a></td>
 	<td class="summary"><code>((a, b) -&gt; c) -&gt; a -&gt; b -&gt; c</code>.</td>
 	</tr>
@@ -146,6 +150,10 @@
 	<tr>
 	<td class="name" nowrap><a href="#pipe">pipe (...)</a></td>
 	<td class="summary"><code>((a -&gt; b), ..., (y -&gt; z)) -&gt; a -&gt; z</code>.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#pipeR">pipeR (...)</a></td>
+	<td class="summary"><code>((b -&gt; a -&gt; b), ..., (b -&gt; a -&gt; b)) -&gt; (b -&gt; a -&gt; b)</code>.</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#tap">tap (f)</a></td>
@@ -316,7 +324,7 @@
          The predicate function.
         </li>
         <li><span class="parameter">list</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
          The list to consider.
         </li>
     </ul>
@@ -350,7 +358,7 @@
          The predicate function.
         </li>
         <li><span class="parameter">list</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
          The list to consider.
         </li>
     </ul>
@@ -379,13 +387,13 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">fst</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
 
 
 
         </li>
         <li><span class="parameter">snd</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
 
 
 
@@ -395,7 +403,7 @@
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
         A new list contained elements of <code>fst</code> followed by elements of <code>snd</code>.
     </ol>
 
@@ -416,7 +424,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">list</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
          The original list.
         </li>
     </ul>
@@ -445,7 +453,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">list</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
          The original list.
         </li>
     </ul>
@@ -453,7 +461,7 @@
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
         A new list containing all but the last element of <code>list</code>.
     </ol>
 
@@ -474,7 +482,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">list</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
          The original list.
         </li>
     </ul>
@@ -508,7 +516,7 @@
          The function to be called on every element of <code>list</code>.
         </li>
         <li><span class="parameter">list</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
          The list to iterate over.
         </li>
     </ul>
@@ -516,7 +524,7 @@
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
         The new list.
     </ol>
 
@@ -549,7 +557,7 @@
          The accumulator value.
         </li>
         <li><span class="parameter">list</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
          The list to iterate over.
         </li>
     </ul>
@@ -578,7 +586,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">list</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
          The list to reverse.
         </li>
     </ul>
@@ -586,7 +594,7 @@
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
         A new, reversed list.
     </ol>
 
@@ -607,7 +615,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">list</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
          The original list.
         </li>
     </ul>
@@ -615,7 +623,7 @@
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
         A new list containing all but the first element of <code>list</code>.
     </ol>
 
@@ -650,7 +658,7 @@
     <ol>
 
            <span class="types"><span class="type">function</span></span>
-        A new, composed function. (<em>Not automatically curried.</em>)
+        A new, composed function. (<em>not automatically curried</em>)
     </ol>
 
 
@@ -658,6 +666,36 @@
     <ul>
          <a href="index.html#pipe">pipe</a>
     </ul>
+
+
+</dd>
+    <dt>
+    <a name = "composeR"></a>
+    <strong>composeR (...)</strong>
+    </dt>
+    <dd>
+    <code>((b -&gt; a -&gt; b), ..., (b -&gt; a -&gt; b)) -&gt; (b -&gt; a -&gt; b)</code>. </p>
+
+<p> Performs right-to-left composition on reducers.  The result of each reduction
+ is passed to the next reducer in turn, along with the same "new value".
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">...</span>
+            <span class="types"><span class="type">function</span></span>
+         The reducers to compose.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">function</span></span>
+        A new, composed reducer. (<em>is curried</em>)
+    </ol>
+
+
 
 
 </dd>
@@ -670,7 +708,7 @@
 <p><code>((a, b) -&gt; c) -&gt; a -&gt; b -&gt; c</code>. </p>
 
 <p> Returns a curried equivalent of the provided function.
- Arguments to curried function needn't be provided on at a time.
+ Arguments to curried function needn't be provided one at a time.
  For example, if <code>f</code> is a ternary function, and <code>local g = curry(f)</code>,
  then the following are equivalent:</p>
 
@@ -716,7 +754,7 @@
 
 <p> Returns a curried equivalent of the provided function, with a
  specified arity. Arguments to curried function needn't be
- provided on at a time. For example, if <code>f</code> is a ternary function,
+ provided one at a time. For example, if <code>f</code> is a ternary function,
  and <code>local g = curryN(3, f)</code>, then the following are equivalent:</p>
 
 <ul>
@@ -777,7 +815,7 @@
     <ol>
 
            <span class="types"><span class="type">function</span></span>
-        A new, flipped function.
+        A new, flipped function. (<em>is curried</em>)
     </ol>
 
 
@@ -833,7 +871,7 @@
          The function to apply partially.
         </li>
         <li><span class="parameter">args</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
          The args to apply to the <code>f</code>.
         </li>
     </ul>
@@ -880,6 +918,36 @@
     <ul>
          <a href="index.html#compose">compose</a>
     </ul>
+
+
+</dd>
+    <dt>
+    <a name = "pipeR"></a>
+    <strong>pipeR (...)</strong>
+    </dt>
+    <dd>
+    <code>((b -&gt; a -&gt; b), ..., (b -&gt; a -&gt; b)) -&gt; (b -&gt; a -&gt; b)</code>. </p>
+
+<p> Performs left-to-right composition on reducers.  The result of each reduction
+ is passed to the next reducer in turn, along with the same "new value".
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">...</span>
+            <span class="types"><span class="type">function</span></span>
+         The reducers to compose.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">function</span></span>
+        A new, composed reducer. (<em>is curried</em>)
+    </ol>
+
+
 
 
 </dd>
@@ -1116,7 +1184,7 @@
     <dd>
     <code>{ s = (a -&gt; a) } -&gt; { s = a } -&gt; { s = a }</code>. </p>
 
-<p> Creates a new table by recursively evolving a shallow copy of <a href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a>,
+<p> Creates a new table by recursively evolving a shallow copy of <a href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a>,
  according to the transform functions. All non-primitive properties
  are copied by reference.</p>
 
@@ -1127,11 +1195,11 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">transforms</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
          The table specifying transform functions to apply.
         </li>
         <li><span class="parameter">table</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
          The table to transform.
         </li>
     </ul>
@@ -1139,7 +1207,7 @@
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
         A new, transformed table.
     </ol>
 
@@ -1161,11 +1229,11 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">keys</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
          List of keys to copy onto a new table.
         </li>
         <li><span class="parameter">table</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
          The table to copy from.
         </li>
     </ul>
@@ -1173,7 +1241,7 @@
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
         A new table with only properties from <code>keys</code> on it.
     </ol>
 
@@ -1194,11 +1262,11 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">key</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.4">string</a></span>
          The property to access.
         </li>
         <li><span class="parameter">table</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
          The table to query.
         </li>
     </ul>
@@ -1331,13 +1399,13 @@
     <dd>
     <code>string -&gt; a -&gt; boolean</code>. </p>
 
-<p> Check if a value is of the specified type.  Calls through to the builtin <a href="http://devdocs.io/lua~5.3/index#pdf-type"><a href="https://www.lua.org/manual/5.2/manual.html#pdf-type">type</a></a> function.
+<p> Check if a value is of the specified type.  Calls through to the builtin <a href="http://devdocs.io/lua~5.3/index#pdf-type"><a href="https://www.lua.org/manual/5.3/manual.html#pdf-type">type</a></a> function.
 
 
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">type</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.4">string</a></span>
          Can be <code>&quot;nil&quot;</code> (a string, not the value nil), <code>&quot;number&quot;</code>, <code>&quot;string&quot;</code>, <code>&quot;boolean&quot;</code>, <code>&quot;table&quot;</code>, <code>&quot;function&quot;</code>, <code>&quot;thread&quot;</code>, or <code>&quot;userdata&quot;</code>.
         </li>
         <li><span class="parameter">a</span>
@@ -1364,7 +1432,7 @@
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
-<i style="float:right;">Last updated 2017-02-06 14:22:54 </i>
+<i style="float:right;">Last updated 2017-02-07 00:30:57 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

@@ -11,9 +11,9 @@ local format, len, match = string.format, string.len, string.match
 local getinfo, getlocal = debug.getinfo, debug.getlocal
 local insert, remove, unpack = table.insert, table.remove, table.unpack
 
-local _assign, _cloneList, _concat, _curry, _curryN, _length, _noop, _ord, _partial, _pipe, _reverse, _validate
+local _assign, _cloneList, _concat, _curry, _curryN, _length, _noop, _ord, _partial, _pipe, _pipeR, _reverse, _validate
 
-local add, all, any, compose, concat, curry, curryN, flip, equals, evolve, gt, head, identity, ifElse, init, is, last, lt, map, max, min, multiply, non, partial, pick, pipe, prop, reduce, reverse, tail, tap, when
+local add, all, any, compose, composeR, concat, curry, curryN, flip, equals, evolve, gt, head, identity, ifElse, init, is, last, lt, map, max, min, multiply, non, partial, pick, pipe, pipeR, prop, reduce, reverse, tail, tap, when
 
 -- Internal
 
@@ -83,6 +83,17 @@ _pipe = function(...)
     end
     return val
   end
+end
+
+-- `((b -> a -> b), ..., (b -> a -> b)) -> (b -> a -> b)`.
+_pipeR = function(...)
+  local fs = {...}
+  return _curryN(2, function(acc, val)
+    for _, f in ipairs(fs) do
+      acc = f(acc, val)
+    end
+    return acc
+  end)
 end
 
 -- `[a] -> [a]`.
@@ -193,11 +204,24 @@ end)
 -- @function compose
 -- @within Function
 -- @tparam function ... The functions to compose.
--- @treturn function A new, composed function. (_Not automatically curried._)
+-- @treturn function A new, composed function. (_not automatically curried_)
 -- @see pipe
 compose = function(...)
   _validate('compose', '...function')
   return _pipe(unpack(_reverse({...})))
+end
+
+--- `((b -> a -> b), ..., (b -> a -> b)) -> (b -> a -> b)`.
+--
+-- Performs right-to-left composition on reducers.  The result of each reduction
+-- is passed to the next reducer in turn, along with the same "new value".
+-- @function composeR
+-- @within Function
+-- @tparam function ... The reducers to compose.
+-- @treturn function A new, composed reducer. (_is curried_)
+composeR = function(...)
+  _validate('composeR', '...function')
+  return _pipeR(unpack(_reverse({...})))
 end
 
 --- `[a] -> [a] -> [a]`.
@@ -216,7 +240,7 @@ end)
 --- `((a, b) -> c) -> a -> b -> c`.
 --
 -- Returns a curried equivalent of the provided function.
--- Arguments to curried function needn't be provided on at a time.
+-- Arguments to curried function needn't be provided one at a time.
 -- For example, if `f` is a ternary function, and `local g = curry(f)`,
 -- then the following are equivalent:
 --
@@ -238,7 +262,7 @@ end
 --
 -- Returns a curried equivalent of the provided function, with a
 -- specified arity. Arguments to curried function needn't be
--- provided on at a time. For example, if `f` is a ternary function,
+-- provided one at a time. For example, if `f` is a ternary function,
 -- and `local g = curryN(3, f)`, then the following are equivalent:
 --
 --  - `g(1)(2)(3)`
@@ -300,7 +324,7 @@ end)
 -- @function flip
 -- @within Function
 -- @tparam function f The function to flip.
--- @treturn function A new, flipped function.
+-- @treturn function A new, flipped function. (_is curried_)
 flip = function(f)
   _validate('flip', 'function')
   f = _curry(f)
@@ -532,6 +556,19 @@ pipe = function(...)
   return _pipe(...)
 end
 
+--- `((b -> a -> b), ..., (b -> a -> b)) -> (b -> a -> b)`.
+--
+-- Performs left-to-right composition on reducers.  The result of each reduction
+-- is passed to the next reducer in turn, along with the same "new value".
+-- @function pipeR
+-- @within Function
+-- @tparam function ... The reducers to compose.
+-- @treturn function A new, composed reducer. (_is curried_)
+pipeR = function(...)
+  _validate('pipeR', '...function')
+  return _pipeR(...)
+end
+
 --- `string -> { s = a } -> a | nil`.
 --
 -- Returns the indicated property of a table, if it exists.
@@ -631,6 +668,7 @@ local squirrel = {
   all      = all,
   any      = any,
   compose  = compose,
+  composeR = composeR,
   concat   = concat,
   curry    = curry,
   curryN   = curryN,
@@ -653,6 +691,7 @@ local squirrel = {
   partial  = partial,
   pick     = pick,
   pipe     = pipe,
+  pipeR    = pipeR,
   prop     = prop,
   reduce   = reduce,
   reverse  = reverse,
