@@ -13,7 +13,7 @@ local insert, remove, unpack = table.insert, table.remove, table.unpack
 
 local _assign, _cloneList, _concat, _curry, _curryN, _length, _noop, _ord, _partial, _pipe, _pipeR, _reverse, _validate
 
-local add, all, any, compose, composeR, concat, curry, curryN, flip, equals, evolve, groupWith, gt, head, identity, ifElse, init, is, last, lt, map, max, min, multiply, non, partial, pick, pipe, pipeR, prop, reduce, reverse, tail, tap, when
+local add, all, any, compose, composeR, concat, curry, curryN, flip, each, equals, evolve, groupWith, gt, head, identity, ifElse, init, is, last, lt, map, max, min, multiply, non, partial, pick, pipe, pipeR, prop, reduce, reverse, tail, tap, when
 
 -- Internal
 
@@ -278,6 +278,23 @@ end
 curryN = _curryN(2, function(n, f)
   _validate('curryN', 'number', 'function')
   return _curryN(n, f)
+end)
+
+--- `(a -> b) -> [a] -> [a]`.
+--
+-- Iterate over an input list, calling a provided function for each element in
+-- the list.  Useful for iterative side-effect work.
+-- @function each
+-- @within List
+-- @tparam function f The function to invoke.
+-- @tparam table list The list to iterate over.
+-- @treturn table The origin list.
+each = _curryN(2, function(f, list)
+  _validate('each', 'function', '[a]')
+  for _, v in ipairs(list) do
+    f(v)
+  end
+  return list
 end)
 
 --- `a -> b -> boolean`.
@@ -692,6 +709,7 @@ local squirrel = {
   concat    = concat,
   curry     = curry,
   curryN    = curryN,
+  each      = each,
   equals    = equals,
   evolve    = evolve,
   flip      = flip,
