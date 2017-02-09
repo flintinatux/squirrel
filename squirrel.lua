@@ -9,7 +9,8 @@
 local assert, ipairs, pairs = assert, ipairs, pairs
 local format, len, match = string.format, string.len, string.match
 local getinfo, getlocal = debug.getinfo, debug.getlocal
-local insert, remove, unpack = table.insert, table.remove, table.unpack
+local insert, remove = table.insert, table.remove
+local unpack = table.unpack or unpack
 
 local _assign, _cloneList, _concat, _curry, _curryN, _length, _noop, _ord, _partial, _pipe, _pipeR, _reverse, _validate
 
