@@ -12,13 +12,23 @@ local getinfo, getlocal = debug.getinfo, debug.getlocal
 local insert, remove = table.insert, table.remove
 local unpack = table.unpack or unpack
 
-local _assign, _cloneList, _concat, _curry, _curryN, _length, _noop, _ord, _partial, _pipe, _pipeR, _reverse, _validate
+local _assign, _cloneList, _concat, _curry, _curryN, _fiveOne, _identity, _length, _level, _noop, _ord, _partial, _pipe, _pipeR, _reverse, _validate
 
 local add, all, any, compose, composeR, concat, curry, curryN, flip, each, equals, evolve, groupWith, gt, head, identity, ifElse, init, is, last, lt, map, max, min, multiply, non, partial, pick, pipe, pipeR, pluck, prop, reduce, reverse, tail, tap, when
 
 -- Internal
 
-_ord = { 'first', 'second', 'third' }
+_fiveOne = _VERSION == 'Lua 5.1'
+_level   = _fiveOne and 3 or 2
+_ord     = { 'first', 'second', 'third' }
+
+-- `a -> a`.
+_identity = function(...)
+  return ...
+end
+
+-- `* -> ()`.
+_noop = function() end
 
 -- `({ s = a }, { s = a }) -> { s = a }`.
 _assign = function(a, b)
@@ -41,7 +51,7 @@ _concat = function(a, b)
 end
 
 -- `((a, b) -> c) -> a -> b -> c`.
-_curry = function(f)
+_curry = _fiveOne and _identity or function(f)
   return _curryN(_length(f), f)
 end
 
@@ -62,9 +72,6 @@ end
 _length = function(f)
   return getinfo(f, 'u').nparams
 end
-
--- `* -> ()`.
-_noop = function() end
 
 -- `(((a, b, ...) -> z), [a, b, ...]) -> ((c, d, ...) -> z)`.
 _partial = function(f, args)
@@ -112,7 +119,7 @@ _validate = _curryN(2, not _DEBUG and _noop or function(func, ...)
     local inner  = match(t, '^%[(%a+)%]$')
     local vararg = match(t, '^%.%.%.(%a+)$')
 
-    local name, val = getlocal(2, i)
+    local name, val = getlocal(_level, i)
     local valType = type(val)
     local base, err
 
@@ -131,15 +138,17 @@ _validate = _curryN(2, not _DEBUG and _noop or function(func, ...)
       end
 
     elseif (vararg and len(vararg) > 1) then
-      base = format('%s: vararg must be all %ss', func, vararg)
-      local j = -1
-      name, val = getlocal(2, j)
-      while val do
-        valType = type(val)
-        err = base .. format(', got a %s', valType)
-        assert(valType == vararg, err)
-        j = j - 1
-        name, val = getlocal(2, j)
+      if not _fiveOne then
+        base = format('%s: vararg must be all %ss', func, vararg)
+        local j = -1
+        name, val = getlocal(_level, j)
+        while val do
+          valType = type(val)
+          err = base .. format(', got a %s', valType)
+          assert(valType == vararg, err)
+          j = j - 1
+          name, val = getlocal(_level, j)
+        end
       end
 
     elseif (len(t) > 1) then
@@ -249,6 +258,10 @@ end)
 --  - `g(1, 2)(3)`
 --  - `g(1)(2, 3)`
 --  - `g(1, 2, 3)`
+--
+-- **Note:** In Lua 5.1, `curry` falls back to `identity`, since the arity of a
+-- function cannot be inspected by `debug.getinfo` until Lua 5.2.  If you need
+-- 5.1, use `curryN` instead where possible.
 -- @function curry
 -- @within Function
 -- @tparam function f The function to curry.
@@ -342,10 +355,9 @@ end)
 -- @function flip
 -- @within Function
 -- @tparam function f The function to flip.
--- @treturn function A new, flipped function. (_is curried_)
+-- @treturn function A new, flipped function. (_is curried with arity 2_)
 flip = function(f)
   _validate('flip', 'function')
-  f = _curry(f)
   return _curryN(2, function(a, b, ...)
     return f(b, a, ...)
   end)
@@ -405,9 +417,7 @@ end
 -- @within Function
 -- @tparam any x The value(s) to return.
 -- @treturn any The input value(s).
-identity = function(...)
-  return ...
-end
+identity = _identity
 
 --- `(a -> boolean) -> (a -> b) -> (a -> c) -> a -> b | c`.
 --

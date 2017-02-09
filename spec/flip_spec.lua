@@ -7,10 +7,8 @@ describe('flip', function()
     assert.is.equal(flip(f)('a', 'b', 'c'), 'bac')
   end)
 
-  it('curries the flipped function', function()
-    assert.is.equal(flip(f)('a', 'b')('c'), 'bac')
+  it('curries the flipped function with arity 2', function()
     assert.is.equal(flip(f)('a')('b', 'c'), 'bac')
-    assert.is.equal(flip(f)('a')('b')('c'), 'bac')
   end)
 
   it('first arg must be function', function()
