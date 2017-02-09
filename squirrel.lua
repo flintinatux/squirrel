@@ -13,7 +13,7 @@ local insert, remove, unpack = table.insert, table.remove, table.unpack
 
 local _assign, _cloneList, _concat, _curry, _curryN, _length, _noop, _ord, _partial, _pipe, _pipeR, _reverse, _validate
 
-local add, all, any, compose, composeR, concat, curry, curryN, flip, each, equals, evolve, groupWith, gt, head, identity, ifElse, init, is, last, lt, map, max, min, multiply, non, partial, pick, pipe, pipeR, prop, reduce, reverse, tail, tap, when
+local add, all, any, compose, composeR, concat, curry, curryN, flip, each, equals, evolve, groupWith, gt, head, identity, ifElse, init, is, last, lt, map, max, min, multiply, non, partial, pick, pipe, pipeR, pluck, prop, reduce, reverse, tail, tap, when
 
 -- Internal
 
@@ -606,6 +606,24 @@ pipeR = function(...)
   return _pipeR(...)
 end
 
+--- `string -> [{ s = a }] -> [a]`.
+--
+-- Returns a new list by plucking the same named key off all tables in the
+-- list supplied.
+-- @function pluck
+-- @within List
+-- @tparam string key The key name to pluck off of each table.
+-- @tparam table list The list to consider.
+-- @treturn table The list of values for the given key.
+pluck = _curryN(2, function(key, list)
+  _validate('pluck', 'string', '[table]')
+  local res = {}
+  for i, elem in ipairs(list) do
+    res[i] = elem[key]
+  end
+  return res
+end)
+
 --- `string -> { s = a } -> a | nil`.
 --
 -- Returns the indicated property of a table, if it exists.
@@ -731,6 +749,7 @@ local squirrel = {
   pick      = pick,
   pipe      = pipe,
   pipeR     = pipeR,
+  pluck     = pluck,
   prop      = prop,
   reduce    = reduce,
   reverse   = reverse,
