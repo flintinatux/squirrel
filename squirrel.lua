@@ -14,7 +14,7 @@ local unpack = table.unpack or unpack
 
 local _assign, _cloneList, _concat, _curry, _curryN, _identity, _length, _noop, _partial, _pipe, _pipeR, _reverse, _validate
 
-local add, all, any, compose, composeR, concat, constant, curry, curryN, each, equals, evolve, flip, groupWith, gt, head, identity, ifElse, init, is, last, lt, map, max, min, multiply, non, partial, pick, pipe, pipeR, pluck, prop, reduce, reverse, tail, tap, when
+local add, all, any, compose, composeR, concat, constant, curry, curryN, each, equals, evolve, flip, groupWith, gt, head, identity, ifElse, init, is, last, lt, map, max, merge, min, multiply, non, partial, pick, pipe, pipeR, pluck, prop, reduce, reverse, tail, tap, when
 
 -- Internal
 
@@ -533,6 +533,24 @@ max = _curryN(2, function(a, b)
   return a > b and a or b
 end)
 
+--- `{ s = a } -> { s = a } -> { s = a }`.
+--
+-- Creates a new table with the properties of the first table merged with the
+-- properties of the second table. If a key exists in both tables, the value
+-- from the second table will be used.
+-- @function merge
+-- @within Table
+-- @tparam table fst The first table.
+-- @tparam table snd The second table.
+-- @treturn table A new merged table.
+merge = _curryN(2, function(a, b)
+  _validate('merge', 'table', 'table')
+  local res = {}
+  _assign(res, a)
+  _assign(res, b)
+  return res
+end)
+
 --- `number -> number -> number`.
 --
 -- Returns the lesser of two numbers.
@@ -769,6 +787,7 @@ local squirrel = {
   lt        = lt,
   map       = map,
   max       = max,
+  merge     = merge,
   min       = min,
   multiply  = multiply,
   non       = non,
