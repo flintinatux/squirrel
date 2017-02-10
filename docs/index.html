@@ -30,12 +30,11 @@
 <h2>Contents</h2>
 <ul>
 <li><a href="#Math">Math</a></li>
-<li><a href="#List">List</a></li>
+<li><a href="#Predicate">Predicate</a></li>
 <li><a href="#Function">Function</a></li>
-<li><a href="#Relation">Relation</a></li>
+<li><a href="#List">List</a></li>
 <li><a href="#Table">Table</a></li>
 <li><a href="#Logic">Logic</a></li>
-<li><a href="#Type">Type</a></li>
 </ul>
 
 
@@ -70,11 +69,19 @@
 	<td class="summary"><code>number -&gt; number -&gt; number</code>.</td>
 	</tr>
 	<tr>
+	<td class="name" nowrap><a href="#max">max (a, b)</a></td>
+	<td class="summary"><code>number -&gt; number -&gt; number</code>.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#min">min (a, b)</a></td>
+	<td class="summary"><code>number -&gt; number -&gt; number</code>.</td>
+	</tr>
+	<tr>
 	<td class="name" nowrap><a href="#multiply">multiply (a, b)</a></td>
 	<td class="summary"><code>number -&gt; number -&gt; number</code>.</td>
 	</tr>
 </table>
-<h2><a href="#List">List</a></h2>
+<h2><a href="#Predicate">Predicate</a></h2>
 <table class="function_list">
 	<tr>
 	<td class="name" nowrap><a href="#all">all (pred, list)</a></td>
@@ -84,6 +91,72 @@
 	<td class="name" nowrap><a href="#any">any (pred, list)</a></td>
 	<td class="summary"><code>(a -&gt; boolean) -&gt; [a] -&gt; boolean</code>.</td>
 	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#equals">equals (a, b)</a></td>
+	<td class="summary"><code>a -&gt; b -&gt; boolean</code>.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#gt">gt (a, b)</a></td>
+	<td class="summary"><code>number -&gt; number -&gt; boolean</code>.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#is">is (type, a)</a></td>
+	<td class="summary"><code>string -&gt; a -&gt; boolean</code>.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#lt">lt (a, b)</a></td>
+	<td class="summary"><code>number -&gt; number -&gt; boolean</code>.</td>
+	</tr>
+</table>
+<h2><a href="#Function">Function</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#compose">compose (...)</a></td>
+	<td class="summary"><code>((y -&gt; z), ..., (a -&gt; b)) -&gt; a -&gt; z</code>.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#composeR">composeR (...)</a></td>
+	<td class="summary"><code>((b -&gt; a -&gt; b), ..., (b -&gt; a -&gt; b)) -&gt; (b -&gt; a -&gt; b)</code>.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#constant">constant (x)</a></td>
+	<td class="summary"><code>a -&gt; (b -&gt; a)</code>.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#curry">curry (f)</a></td>
+	<td class="summary"><code>((a, b) -&gt; c) -&gt; a -&gt; b -&gt; c</code>.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#curryN">curryN (arity, f)</a></td>
+	<td class="summary"><code>number -&gt; ((a, b) -&gt; c) -&gt; a -&gt; b -&gt; c</code>.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#flip">flip (f)</a></td>
+	<td class="summary"><code>(a -&gt; b -&gt; c) -&gt; b -&gt; a -&gt; c</code>.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#identity">identity (x)</a></td>
+	<td class="summary"><code>a -&gt; a</code>.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#partial">partial (f, args)</a></td>
+	<td class="summary"><code>((a, b, ...) -&gt; z) -&gt; [a, b, ...] -&gt; ((c, d, ...) -&gt; z)</code>.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#pipe">pipe (...)</a></td>
+	<td class="summary"><code>((a -&gt; b), ..., (y -&gt; z)) -&gt; a -&gt; z</code>.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#pipeR">pipeR (...)</a></td>
+	<td class="summary"><code>((b -&gt; a -&gt; b), ..., (b -&gt; a -&gt; b)) -&gt; (b -&gt; a -&gt; b)</code>.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#tap">tap (f)</a></td>
+	<td class="summary"><code>(a -&gt; b) -&gt; a -&gt; a</code>.</td>
+	</tr>
+</table>
+<h2><a href="#List">List</a></h2>
+<table class="function_list">
 	<tr>
 	<td class="name" nowrap><a href="#concat">concat (fst, snd)</a></td>
 	<td class="summary"><code>[a] -&gt; [a] -&gt; [a]</code>.</td>
@@ -129,72 +202,6 @@
 	<td class="summary"><code>[a] -&gt; [a]</code>.</td>
 	</tr>
 </table>
-<h2><a href="#Function">Function</a></h2>
-<table class="function_list">
-	<tr>
-	<td class="name" nowrap><a href="#compose">compose (...)</a></td>
-	<td class="summary"><code>((y -&gt; z), ..., (a -&gt; b)) -&gt; a -&gt; z</code>.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#composeR">composeR (...)</a></td>
-	<td class="summary"><code>((b -&gt; a -&gt; b), ..., (b -&gt; a -&gt; b)) -&gt; (b -&gt; a -&gt; b)</code>.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#curry">curry (f)</a></td>
-	<td class="summary"><code>((a, b) -&gt; c) -&gt; a -&gt; b -&gt; c</code>.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#curryN">curryN (arity, f)</a></td>
-	<td class="summary"><code>number -&gt; ((a, b) -&gt; c) -&gt; a -&gt; b -&gt; c</code>.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#flip">flip (f)</a></td>
-	<td class="summary"><code>(a -&gt; b -&gt; c) -&gt; b -&gt; a -&gt; c</code>.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#identity">identity (x)</a></td>
-	<td class="summary"><code>a -&gt; a</code>.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#partial">partial (f, args)</a></td>
-	<td class="summary"><code>((a, b, ...) -&gt; z) -&gt; [a, b, ...] -&gt; ((c, d, ...) -&gt; z)</code>.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#pipe">pipe (...)</a></td>
-	<td class="summary"><code>((a -&gt; b), ..., (y -&gt; z)) -&gt; a -&gt; z</code>.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#pipeR">pipeR (...)</a></td>
-	<td class="summary"><code>((b -&gt; a -&gt; b), ..., (b -&gt; a -&gt; b)) -&gt; (b -&gt; a -&gt; b)</code>.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#tap">tap (f)</a></td>
-	<td class="summary"><code>(a -&gt; b) -&gt; a -&gt; a</code>.</td>
-	</tr>
-</table>
-<h2><a href="#Relation">Relation</a></h2>
-<table class="function_list">
-	<tr>
-	<td class="name" nowrap><a href="#equals">equals (a, b)</a></td>
-	<td class="summary"><code>a -&gt; b -&gt; boolean</code>.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#gt">gt (a, b)</a></td>
-	<td class="summary"><code>number -&gt; number -&gt; boolean</code>.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#lt">lt (a, b)</a></td>
-	<td class="summary"><code>number -&gt; number -&gt; boolean</code>.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#max">max (a, b)</a></td>
-	<td class="summary"><code>number -&gt; number -&gt; number</code>.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#min">min (a, b)</a></td>
-	<td class="summary"><code>number -&gt; number -&gt; number</code>.</td>
-	</tr>
-</table>
 <h2><a href="#Table">Table</a></h2>
 <table class="function_list">
 	<tr>
@@ -223,13 +230,6 @@
 	<tr>
 	<td class="name" nowrap><a href="#when">when (pred, onTrue)</a></td>
 	<td class="summary"><code>(a -&gt; boolean) -&gt; (a -&gt; b) -&gt; a | b</code>.</td>
-	</tr>
-</table>
-<h2><a href="#Type">Type</a></h2>
-<table class="function_list">
-	<tr>
-	<td class="name" nowrap><a href="#is">is (type, a)</a></td>
-	<td class="summary"><code>string -&gt; a -&gt; boolean</code>.</td>
 	</tr>
 </table>
 
@@ -278,6 +278,80 @@
 
 </dd>
     <dt>
+    <a name = "max"></a>
+    <strong>max (a, b)</strong>
+    </dt>
+    <dd>
+    <code>number -&gt; number -&gt; number</code>. </p>
+
+<p> Returns the greater of two numbers.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">a</span>
+            <span class="types"><span class="type">number</span></span>
+
+
+
+        </li>
+        <li><span class="parameter">b</span>
+            <span class="types"><span class="type">number</span></span>
+
+
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        Either <code>a</code> or <code>b</code>, whichever is greater.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "min"></a>
+    <strong>min (a, b)</strong>
+    </dt>
+    <dd>
+    <code>number -&gt; number -&gt; number</code>. </p>
+
+<p> Returns the lesser of two numbers.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">a</span>
+            <span class="types"><span class="type">number</span></span>
+
+
+
+        </li>
+        <li><span class="parameter">b</span>
+            <span class="types"><span class="type">number</span></span>
+
+
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        Either <code>a</code> or <code>b</code>, whichever is lesser.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
     <a name = "multiply"></a>
     <strong>multiply (a, b)</strong>
     </dt>
@@ -315,7 +389,7 @@
 
 </dd>
 </dl>
-    <h2 class="section-header "><a name="List"></a>List</h2>
+    <h2 class="section-header "><a name="Predicate"></a>Predicate</h2>
 
     <dl class="function">
     <dt>
@@ -336,7 +410,7 @@
          The predicate function.
         </li>
         <li><span class="parameter">list</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
          The list to consider.
         </li>
     </ul>
@@ -370,7 +444,7 @@
          The predicate function.
         </li>
         <li><span class="parameter">list</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
          The list to consider.
         </li>
     </ul>
@@ -387,301 +461,37 @@
 
 </dd>
     <dt>
-    <a name = "concat"></a>
-    <strong>concat (fst, snd)</strong>
+    <a name = "equals"></a>
+    <strong>equals (a, b)</strong>
     </dt>
     <dd>
-    <code>[a] -&gt; [a] -&gt; [a]</code>. </p>
+    <code>a -&gt; b -&gt; boolean</code>. </p>
 
-<p> Concatenates two lists.
+<p> Returns <code>true</code> if its arguments are equivalent, <code>false</code> otherwise, based on
+ Lua equality (<code>==</code>).
 
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">fst</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
-
-
-
-        </li>
-        <li><span class="parameter">snd</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
-
-
-
-        </li>
-    </ul>
-
-    <h3>Returns:</h3>
-    <ol>
-
-           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
-        A new list contained elements of <code>fst</code> followed by elements of <code>snd</code>.
-    </ol>
-
-
-
-
-</dd>
-    <dt>
-    <a name = "each"></a>
-    <strong>each (f, list)</strong>
-    </dt>
-    <dd>
-    <code>(a -&gt; b) -&gt; [a] -&gt; [a]</code>. </p>
-
-<p> Iterate over an input list, calling a provided function for each element in
- the list.  Useful for iterative side-effect work.
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">f</span>
-            <span class="types"><span class="type">function</span></span>
-         The function to invoke.
-        </li>
-        <li><span class="parameter">list</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
-         The list to iterate over.
-        </li>
-    </ul>
-
-    <h3>Returns:</h3>
-    <ol>
-
-           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
-        The origin list.
-    </ol>
-
-
-
-
-</dd>
-    <dt>
-    <a name = "groupWith"></a>
-    <strong>groupWith (pred, list)</strong>
-    </dt>
-    <dd>
-    <code>((a, a) -&gt; boolean) -&gt; [a] -&gt; [[a]]</code>. </p>
-
-<p> Takes a list and returns a list of lists where each sublist's elements are
- all satisfied pairwise comparison according to the provided function.
- Only adjacent elements are passed to the comparison function.
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">pred</span>
-            <span class="types"><span class="type">function</span></span>
-         The predicate to compare adjacent elements.
-        </li>
-        <li><span class="parameter">list</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
-         The list to consider.
-        </li>
-    </ul>
-
-    <h3>Returns:</h3>
-    <ol>
-
-           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
-        A list that contains sublists of elements, whose concatenations are equal to the original list.
-    </ol>
-
-
-
-
-</dd>
-    <dt>
-    <a name = "head"></a>
-    <strong>head (list)</strong>
-    </dt>
-    <dd>
-    <code>[a] -&gt; a | nil</code>. </p>
-
-<p> Returns the first element of the given list.
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">list</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
-         The original list.
-        </li>
-    </ul>
-
-    <h3>Returns:</h3>
-    <ol>
-
-           <span class="types"><a class="type" href="index.html#any">any</a></span>
-        The first element of <code>list</code>, or <code>nil</code> if <code>list</code> is empty.
-    </ol>
-
-
-
-
-</dd>
-    <dt>
-    <a name = "init"></a>
-    <strong>init (list)</strong>
-    </dt>
-    <dd>
-    <code>[a] -&gt; [a]</code>. </p>
-
-<p> Returns all but the last element of the given list.
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">list</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
-         The original list.
-        </li>
-    </ul>
-
-    <h3>Returns:</h3>
-    <ol>
-
-           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
-        A new list containing all but the last element of <code>list</code>.
-    </ol>
-
-
-
-
-</dd>
-    <dt>
-    <a name = "last"></a>
-    <strong>last (list)</strong>
-    </dt>
-    <dd>
-    <code>[a] -&gt; a | nil</code>. </p>
-
-<p> Returns the last element of the given list.
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">list</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
-         The original list.
-        </li>
-    </ul>
-
-    <h3>Returns:</h3>
-    <ol>
-
-           <span class="types"><a class="type" href="index.html#any">any</a></span>
-        The last element of <code>list</code>, or <code>nil</code> if <code>list</code> is empty.
-    </ol>
-
-
-
-
-</dd>
-    <dt>
-    <a name = "map"></a>
-    <strong>map (f, list)</strong>
-    </dt>
-    <dd>
-    <code>(a -&gt; b) -&gt; [a] -&gt; [b]</code>. </p>
-
-<p> Takes a function and a list, applies the function to each of the list's
- values, and returns a list of the same shape.
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">f</span>
-            <span class="types"><span class="type">function</span></span>
-         The function to be called on every element of <code>list</code>.
-        </li>
-        <li><span class="parameter">list</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
-         The list to iterate over.
-        </li>
-    </ul>
-
-    <h3>Returns:</h3>
-    <ol>
-
-           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
-        The new list.
-    </ol>
-
-
-
-
-</dd>
-    <dt>
-    <a name = "pluck"></a>
-    <strong>pluck (key, list)</strong>
-    </dt>
-    <dd>
-    <code>string -&gt; [{ s = a }] -&gt; [a]</code>. </p>
-
-<p> Returns a new list by plucking the same named key off all tables in the
- list supplied.
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">key</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
-         The key name to pluck off of each table.
-        </li>
-        <li><span class="parameter">list</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
-         The list to consider.
-        </li>
-    </ul>
-
-    <h3>Returns:</h3>
-    <ol>
-
-           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
-        The list of values for the given key.
-    </ol>
-
-
-
-
-</dd>
-    <dt>
-    <a name = "reduce"></a>
-    <strong>reduce (f, acc, list)</strong>
-    </dt>
-    <dd>
-    <code>(b -&gt; a -&gt; b) -&gt; b -&gt; [a] -&gt; b</code>. </p>
-
-<p> Returns a single item by iterating through a list, successively calling
- the iterator function and passing it an accumulator value and the current
- value from the list, and then passing the result to the next call.</p>
-
-<p> The iterator function receives two values: <code>(acc, value)</code>.
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">f</span>
-            <span class="types"><span class="type">function</span></span>
-         The iterator function.
-        </li>
-        <li><span class="parameter">acc</span>
+        <li><span class="parameter">a</span>
             <span class="types"><a class="type" href="index.html#any">any</a></span>
-         The accumulator value.
+
+
+
         </li>
-        <li><span class="parameter">list</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
-         The list to iterate over.
+        <li><span class="parameter">b</span>
+            <span class="types"><a class="type" href="index.html#any">any</a></span>
+
+
+
         </li>
     </ul>
 
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="index.html#any">any</a></span>
-        The final, accumulated value.
+           <span class="types"><span class="type">boolean</span></span>
+        Boolean <code>true</code> if its arguments are equivalent, <code>false</code> otherwise.
     </ol>
 
 
@@ -689,28 +499,37 @@
 
 </dd>
     <dt>
-    <a name = "reverse"></a>
-    <strong>reverse (list)</strong>
+    <a name = "gt"></a>
+    <strong>gt (a, b)</strong>
     </dt>
     <dd>
-    <code>[a] -&gt; [a]</code>. </p>
+    <code>number -&gt; number -&gt; boolean</code>. </p>
 
-<p> Returns a new list with the elements in reverse order.
+<p> Returns <code>true</code> if the first number is greater than the second, or <code>false</code>
+ otherwise.
 
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">list</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
-         The list to reverse.
+        <li><span class="parameter">a</span>
+            <span class="types"><span class="type">number</span></span>
+
+
+
+        </li>
+        <li><span class="parameter">b</span>
+            <span class="types"><span class="type">number</span></span>
+
+
+
         </li>
     </ul>
 
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
-        A new, reversed list.
+           <span class="types"><span class="type">boolean</span></span>
+        True if <code>a</code> is greater than <code>b</code>.
     </ol>
 
 
@@ -718,28 +537,70 @@
 
 </dd>
     <dt>
-    <a name = "tail"></a>
-    <strong>tail (list)</strong>
+    <a name = "is"></a>
+    <strong>is (type, a)</strong>
     </dt>
     <dd>
-    <code>[a] -&gt; [a]</code>. </p>
+    <code>string -&gt; a -&gt; boolean</code>. </p>
 
-<p> Returns all but the first element of the given list.
+<p> Returns <code>true</code> if a value is of the specified type.  Calls through to the builtin <a href="http://devdocs.io/lua~5.3/index#pdf-type"><a href="https://www.lua.org/manual/5.3/manual.html#pdf-type">type</a></a> function.
 
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">list</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
-         The original list.
+        <li><span class="parameter">type</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.4">string</a></span>
+         Can be <code>&quot;nil&quot;</code> (a string, not the value nil), <code>&quot;number&quot;</code>, <code>&quot;string&quot;</code>, <code>&quot;boolean&quot;</code>, <code>&quot;table&quot;</code>, <code>&quot;function&quot;</code>, <code>&quot;thread&quot;</code>, or <code>&quot;userdata&quot;</code>.
+        </li>
+        <li><span class="parameter">a</span>
+            <span class="types"><a class="type" href="index.html#any">any</a></span>
+         The value to check.
         </li>
     </ul>
 
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
-        A new list containing all but the first element of <code>list</code>.
+           <span class="types"><span class="type">boolean</span></span>
+        True if <code>type(a)</code> matches the specified type.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "lt"></a>
+    <strong>lt (a, b)</strong>
+    </dt>
+    <dd>
+    <code>number -&gt; number -&gt; boolean</code>. </p>
+
+<p> Returns <code>true</code> if the first number is less than the second, or <code>false</code>
+ otherwise.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">a</span>
+            <span class="types"><span class="type">number</span></span>
+
+
+
+        </li>
+        <li><span class="parameter">b</span>
+            <span class="types"><span class="type">number</span></span>
+
+
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">boolean</span></span>
+        True if <code>a</code> is less than <code>b</code>.
     </ol>
 
 
@@ -815,6 +676,35 @@
 
 </dd>
     <dt>
+    <a name = "constant"></a>
+    <strong>constant (x)</strong>
+    </dt>
+    <dd>
+    <code>a -&gt; (b -&gt; a)</code>. </p>
+
+<p> Returns a function that always returns the given value.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">x</span>
+            <span class="types"><a class="type" href="index.html#any">any</a></span>
+         The value to wrap in a function.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">function</span></span>
+        The new, constant-value function.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
     <a name = "curry"></a>
     <strong>curry (f)</strong>
     </dt>
@@ -834,7 +724,7 @@
 </ul>
 
 <p> <strong>Note:</strong> In Lua 5.1, <a href="index.html#curry">curry</a> falls back to <a href="index.html#identity">identity</a>, since the arity of a
- function cannot be inspected by <a href="https://www.lua.org/manual/5.1/manual.html#pdf-debug.getinfo">debug.getinfo</a> until Lua 5.2.  If you need
+ function cannot be inspected by <a href="https://www.lua.org/manual/5.3/manual.html#pdf-debug.getinfo">debug.getinfo</a> until Lua 5.2.  If you need
  5.1, use <a href="index.html#curryN">curryN</a> instead where possible.
 
 
@@ -988,7 +878,7 @@
          The function to apply partially.
         </li>
         <li><span class="parameter">args</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
          The args to apply to the <code>f</code>.
         </li>
     </ul>
@@ -1099,41 +989,305 @@
 
 </dd>
 </dl>
-    <h2 class="section-header "><a name="Relation"></a>Relation</h2>
+    <h2 class="section-header "><a name="List"></a>List</h2>
 
     <dl class="function">
     <dt>
-    <a name = "equals"></a>
-    <strong>equals (a, b)</strong>
+    <a name = "concat"></a>
+    <strong>concat (fst, snd)</strong>
     </dt>
     <dd>
-    <code>a -&gt; b -&gt; boolean</code>. </p>
+    <code>[a] -&gt; [a] -&gt; [a]</code>. </p>
 
-<p> Returns <code>true</code> if its arguments are equivalent, <code>false</code> otherwise, based on
- Lua equality (<code>==</code>).
+<p> Concatenates two lists.
 
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">a</span>
+        <li><span class="parameter">fst</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
+
+
+
+        </li>
+        <li><span class="parameter">snd</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
+
+
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
+        A new list contained elements of <code>fst</code> followed by elements of <code>snd</code>.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "each"></a>
+    <strong>each (f, list)</strong>
+    </dt>
+    <dd>
+    <code>(a -&gt; b) -&gt; [a] -&gt; [a]</code>. </p>
+
+<p> Iterate over an input list, calling a provided function for each element in
+ the list.  Useful for iterative side-effect work.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">f</span>
+            <span class="types"><span class="type">function</span></span>
+         The function to invoke.
+        </li>
+        <li><span class="parameter">list</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
+         The list to iterate over.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
+        The origin list.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "groupWith"></a>
+    <strong>groupWith (pred, list)</strong>
+    </dt>
+    <dd>
+    <code>((a, a) -&gt; boolean) -&gt; [a] -&gt; [[a]]</code>. </p>
+
+<p> Takes a list and returns a list of lists where each sublist's elements are
+ all satisfied pairwise comparison according to the provided function.
+ Only adjacent elements are passed to the comparison function.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">pred</span>
+            <span class="types"><span class="type">function</span></span>
+         The predicate to compare adjacent elements.
+        </li>
+        <li><span class="parameter">list</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
+         The list to consider.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
+        A list that contains sublists of elements, whose concatenations are equal to the original list.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "head"></a>
+    <strong>head (list)</strong>
+    </dt>
+    <dd>
+    <code>[a] -&gt; a | nil</code>. </p>
+
+<p> Returns the first element of the given list.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">list</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
+         The original list.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="index.html#any">any</a></span>
+        The first element of <code>list</code>, or <code>nil</code> if <code>list</code> is empty.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "init"></a>
+    <strong>init (list)</strong>
+    </dt>
+    <dd>
+    <code>[a] -&gt; [a]</code>. </p>
+
+<p> Returns all but the last element of the given list.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">list</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
+         The original list.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
+        A new list containing all but the last element of <code>list</code>.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "last"></a>
+    <strong>last (list)</strong>
+    </dt>
+    <dd>
+    <code>[a] -&gt; a | nil</code>. </p>
+
+<p> Returns the last element of the given list.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">list</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
+         The original list.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="index.html#any">any</a></span>
+        The last element of <code>list</code>, or <code>nil</code> if <code>list</code> is empty.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "map"></a>
+    <strong>map (f, list)</strong>
+    </dt>
+    <dd>
+    <code>(a -&gt; b) -&gt; [a] -&gt; [b]</code>. </p>
+
+<p> Takes a function and a list, applies the function to each of the list's
+ values, and returns a list of the same shape.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">f</span>
+            <span class="types"><span class="type">function</span></span>
+         The function to be called on every element of <code>list</code>.
+        </li>
+        <li><span class="parameter">list</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
+         The list to iterate over.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
+        The new list.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "pluck"></a>
+    <strong>pluck (key, list)</strong>
+    </dt>
+    <dd>
+    <code>string -&gt; [{ s = a }] -&gt; [a]</code>. </p>
+
+<p> Returns a new list by plucking the same named key off all tables in the
+ list supplied.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">key</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.4">string</a></span>
+         The key name to pluck off of each table.
+        </li>
+        <li><span class="parameter">list</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
+         The list to consider.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
+        The list of values for the given key.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "reduce"></a>
+    <strong>reduce (f, acc, list)</strong>
+    </dt>
+    <dd>
+    <code>(b -&gt; a -&gt; b) -&gt; b -&gt; [a] -&gt; b</code>. </p>
+
+<p> Returns a single item by iterating through a list, successively calling
+ the iterator function and passing it an accumulator value and the current
+ value from the list, and then passing the result to the next call.</p>
+
+<p> The iterator function receives two values: <code>(acc, value)</code>.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">f</span>
+            <span class="types"><span class="type">function</span></span>
+         The iterator function.
+        </li>
+        <li><span class="parameter">acc</span>
             <span class="types"><a class="type" href="index.html#any">any</a></span>
-
-
-
+         The accumulator value.
         </li>
-        <li><span class="parameter">b</span>
-            <span class="types"><a class="type" href="index.html#any">any</a></span>
-
-
-
+        <li><span class="parameter">list</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
+         The list to iterate over.
         </li>
     </ul>
 
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><span class="type">boolean</span></span>
-        Boolean <code>true</code> if its arguments are equivalent, <code>false</code> otherwise.
+           <span class="types"><a class="type" href="index.html#any">any</a></span>
+        The final, accumulated value.
     </ol>
 
 
@@ -1141,37 +1295,28 @@
 
 </dd>
     <dt>
-    <a name = "gt"></a>
-    <strong>gt (a, b)</strong>
+    <a name = "reverse"></a>
+    <strong>reverse (list)</strong>
     </dt>
     <dd>
-    <code>number -&gt; number -&gt; boolean</code>. </p>
+    <code>[a] -&gt; [a]</code>. </p>
 
-<p> Returns <code>true</code> if the first number is greater than the second, or <code>false</code>
- otherwise.
+<p> Returns a new list with the elements in reverse order.
 
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">a</span>
-            <span class="types"><span class="type">number</span></span>
-
-
-
-        </li>
-        <li><span class="parameter">b</span>
-            <span class="types"><span class="type">number</span></span>
-
-
-
+        <li><span class="parameter">list</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
+         The list to reverse.
         </li>
     </ul>
 
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><span class="type">boolean</span></span>
-        True if <code>a</code> is greater than <code>b</code>.
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
+        A new, reversed list.
     </ol>
 
 
@@ -1179,111 +1324,28 @@
 
 </dd>
     <dt>
-    <a name = "lt"></a>
-    <strong>lt (a, b)</strong>
+    <a name = "tail"></a>
+    <strong>tail (list)</strong>
     </dt>
     <dd>
-    <code>number -&gt; number -&gt; boolean</code>. </p>
+    <code>[a] -&gt; [a]</code>. </p>
 
-<p> Returns <code>true</code> if the first number is less than the second, or <code>false</code>
- otherwise.
+<p> Returns all but the first element of the given list.
 
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">a</span>
-            <span class="types"><span class="type">number</span></span>
-
-
-
-        </li>
-        <li><span class="parameter">b</span>
-            <span class="types"><span class="type">number</span></span>
-
-
-
+        <li><span class="parameter">list</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
+         The original list.
         </li>
     </ul>
 
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><span class="type">boolean</span></span>
-        True if <code>a</code> is less than <code>b</code>.
-    </ol>
-
-
-
-
-</dd>
-    <dt>
-    <a name = "max"></a>
-    <strong>max (a, b)</strong>
-    </dt>
-    <dd>
-    <code>number -&gt; number -&gt; number</code>. </p>
-
-<p> Returns the greater of two numbers.
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">a</span>
-            <span class="types"><span class="type">number</span></span>
-
-
-
-        </li>
-        <li><span class="parameter">b</span>
-            <span class="types"><span class="type">number</span></span>
-
-
-
-        </li>
-    </ul>
-
-    <h3>Returns:</h3>
-    <ol>
-
-           <span class="types"><span class="type">number</span></span>
-        Either <code>a</code> or <code>b</code>, whichever is greater.
-    </ol>
-
-
-
-
-</dd>
-    <dt>
-    <a name = "min"></a>
-    <strong>min (a, b)</strong>
-    </dt>
-    <dd>
-    <code>number -&gt; number -&gt; number</code>. </p>
-
-<p> Returns the lesser of two numbers.
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">a</span>
-            <span class="types"><span class="type">number</span></span>
-
-
-
-        </li>
-        <li><span class="parameter">b</span>
-            <span class="types"><span class="type">number</span></span>
-
-
-
-        </li>
-    </ul>
-
-    <h3>Returns:</h3>
-    <ol>
-
-           <span class="types"><span class="type">number</span></span>
-        Either <code>a</code> or <code>b</code>, whichever is lesser.
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
+        A new list containing all but the first element of <code>list</code>.
     </ol>
 
 
@@ -1301,7 +1363,7 @@
     <dd>
     <code>{ s = (a -&gt; a) } -&gt; { s = a } -&gt; { s = a }</code>. </p>
 
-<p> Creates a new table by recursively evolving a shallow copy of <a href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a>,
+<p> Creates a new table by recursively evolving a shallow copy of <a href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a>,
  according to the transform functions. All non-primitive properties
  are copied by reference.</p>
 
@@ -1312,11 +1374,11 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">transforms</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
          The table specifying transform functions to apply.
         </li>
         <li><span class="parameter">table</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
          The table to transform.
         </li>
     </ul>
@@ -1324,7 +1386,7 @@
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
         A new, transformed table.
     </ol>
 
@@ -1346,11 +1408,11 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">keys</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
          List of keys to copy onto a new table.
         </li>
         <li><span class="parameter">table</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
          The table to copy from.
         </li>
     </ul>
@@ -1358,7 +1420,7 @@
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
         A new table with only properties from <code>keys</code> on it.
     </ol>
 
@@ -1379,11 +1441,11 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">key</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.4">string</a></span>
          The property to access.
         </li>
         <li><span class="parameter">table</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
          The table to query.
         </li>
     </ul>
@@ -1506,50 +1568,13 @@
 
 </dd>
 </dl>
-    <h2 class="section-header "><a name="Type"></a>Type</h2>
-
-    <dl class="function">
-    <dt>
-    <a name = "is"></a>
-    <strong>is (type, a)</strong>
-    </dt>
-    <dd>
-    <code>string -&gt; a -&gt; boolean</code>. </p>
-
-<p> Check if a value is of the specified type.  Calls through to the builtin <a href="http://devdocs.io/lua~5.3/index#pdf-type"><a href="https://www.lua.org/manual/5.1/manual.html#pdf-type">type</a></a> function.
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">type</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
-         Can be <code>&quot;nil&quot;</code> (a string, not the value nil), <code>&quot;number&quot;</code>, <code>&quot;string&quot;</code>, <code>&quot;boolean&quot;</code>, <code>&quot;table&quot;</code>, <code>&quot;function&quot;</code>, <code>&quot;thread&quot;</code>, or <code>&quot;userdata&quot;</code>.
-        </li>
-        <li><span class="parameter">a</span>
-            <span class="types"><a class="type" href="index.html#any">any</a></span>
-         The value to check.
-        </li>
-    </ul>
-
-    <h3>Returns:</h3>
-    <ol>
-
-           <span class="types"><span class="type">boolean</span></span>
-        True if <code>type(a)</code> matches the specified type.
-    </ol>
-
-
-
-
-</dd>
-</dl>
 
 
 </div> <!-- id="content" -->
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
-<i style="float:right;">Last updated 2017-02-09 21:46:05 </i>
+<i style="float:right;">Last updated 2017-02-10 17:26:53 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

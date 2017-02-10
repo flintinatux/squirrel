@@ -14,7 +14,7 @@ local unpack = table.unpack or unpack
 
 local _assign, _cloneList, _concat, _curry, _curryN, _identity, _length, _noop, _partial, _pipe, _pipeR, _reverse, _validate
 
-local add, all, any, compose, composeR, concat, curry, curryN, flip, each, equals, evolve, groupWith, gt, head, identity, ifElse, init, is, last, lt, map, max, min, multiply, non, partial, pick, pipe, pipeR, pluck, prop, reduce, reverse, tail, tap, when
+local add, all, any, compose, composeR, concat, constant, curry, curryN, each, equals, evolve, flip, groupWith, gt, head, identity, ifElse, init, is, last, lt, map, max, min, multiply, non, partial, pick, pipe, pipeR, pluck, prop, reduce, reverse, tail, tap, when
 
 -- Internal
 
@@ -180,7 +180,7 @@ end)
 -- Returns `true` if all elements in the list match the predicate,
 -- `false` otherwise.
 -- @function all
--- @within List
+-- @within Predicate
 -- @tparam function pred The predicate function.
 -- @tparam table list The list to consider.
 -- @treturn boolean Boolean `true` if the predicate is satisfied by all elements, `false` otherwise.
@@ -197,7 +197,7 @@ end)
 -- Returns `true` if at least one element in the list matches the predicate,
 -- `false` otherwise.
 -- @function any
--- @within List
+-- @within Predicate
 -- @tparam function pred The predicate function.
 -- @tparam table list The list to consider.
 -- @treturn boolean Boolean `true` if the predicate is satisfied by at least one element, `false` otherwise.
@@ -248,6 +248,19 @@ concat = _curryN(2, function(a, b)
   _validate('concat', '[a]', '[a]')
   return _concat(a, b)
 end)
+
+--- `a -> (b -> a)`.
+--
+-- Returns a function that always returns the given value.
+-- @function constant
+-- @within Function
+-- @tparam any x The value to wrap in a function.
+-- @treturn function The new, constant-value function.
+constant = function(val)
+  return function()
+    return val
+  end
+end
 
 --- `((a, b) -> c) -> a -> b -> c`.
 --
@@ -318,7 +331,7 @@ end)
 -- Returns `true` if its arguments are equivalent, `false` otherwise, based on
 -- Lua equality (`==`).
 -- @function equals
--- @within Relation
+-- @within Predicate
 -- @tparam any a
 -- @tparam any b
 -- @treturn boolean Boolean `true` if its arguments are equivalent, `false` otherwise.
@@ -390,7 +403,7 @@ end)
 -- Returns `true` if the first number is greater than the second, or `false`
 -- otherwise.
 -- @function gt
--- @within Relation
+-- @within Predicate
 -- @tparam number a
 -- @tparam number b
 -- @treturn boolean True if `a` is greater than `b`.
@@ -454,9 +467,9 @@ end
 
 --- `string -> a -> boolean`.
 --
--- Check if a value is of the specified type.  Calls through to the builtin [`type`](http://devdocs.io/lua~5.3/index#pdf-type) function.
+-- Returns `true` if a value is of the specified type.  Calls through to the builtin [`type`](http://devdocs.io/lua~5.3/index#pdf-type) function.
 -- @function is
--- @within Type
+-- @within Predicate
 -- @tparam string type Can be `"nil"` (a string, not the value nil), `"number"`, `"string"`, `"boolean"`, `"table"`, `"function"`, `"thread"`, or `"userdata"`.
 -- @tparam any a The value to check.
 -- @treturn boolean True if `type(a)` matches the specified type.
@@ -482,7 +495,7 @@ end
 -- Returns `true` if the first number is less than the second, or `false`
 -- otherwise.
 -- @function lt
--- @within Relation
+-- @within Predicate
 -- @tparam number a
 -- @tparam number b
 -- @treturn boolean True if `a` is less than `b`.
@@ -511,7 +524,7 @@ end)
 --
 -- Returns the greater of two numbers.
 -- @function max
--- @within Relation
+-- @within Math
 -- @tparam number a
 -- @tparam number b
 -- @treturn number Either `a` or `b`, whichever is greater.
@@ -524,7 +537,7 @@ end)
 --
 -- Returns the lesser of two numbers.
 -- @function min
--- @within Relation
+-- @within Math
 -- @tparam number a
 -- @tparam number b
 -- @treturn number Either `a` or `b`, whichever is lesser.
@@ -738,6 +751,7 @@ local squirrel = {
   compose   = compose,
   composeR  = composeR,
   concat    = concat,
+  constant  = constant,
   curry     = curry,
   curryN    = curryN,
   each      = each,
