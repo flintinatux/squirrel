@@ -12,17 +12,19 @@ local getinfo, getlocal = debug.getinfo, debug.getlocal
 local insert, remove = table.insert, table.remove
 local unpack = table.unpack or unpack
 
-local _assign, _cloneList, _concat, _curry, _curryN, _identity, _length, _noop, _partial, _pipe, _pipeR, _reverse, _validate
+local _assign, _cloneList, _concat, _curry, _curryN, _identity, _invert, _length, _noop, _partial, _pipe, _pipeR, _reverse, _validate
 
-local add, all, any, compose, composeR, concat, constant, curry, curryN, each, equals, evolve, flip, groupWith, gt, head, identity, ifElse, init, is, last, lt, map, max, merge, min, multiply, non, partial, pick, pipe, pipeR, pluck, prop, reduce, reverse, tail, tap, when
+local add, all, any, compose, composeR, concat, constant, curry, curryN, each, equals, evolve, flip, groupWith, gt, head, identity, ifElse, init, is, last, lt, map, max, merge, min, multiply, non, omit, partial, pick, pipe, pipeR, pluck, prop, reduce, reverse, tail, tap, when
 
--- Internal
+-- Constants
 
 local FIVE_ONE = _VERSION == 'Lua 5.1'
 local LUAJIT   = type(jit) == 'table'
 
-local level = (FIVE_ONE and not LUAJIT) and 3 or 2
-local ord   = { 'first', 'second', 'third' }
+local LEVEL = (FIVE_ONE and not LUAJIT) and 3 or 2
+local ORD   = { 'first', 'second', 'third' }
+
+-- Placeholders
 
 -- `a -> a`.
 _identity = function(...)
@@ -31,6 +33,8 @@ end
 
 -- `* -> ()`.
 _noop = function() end
+
+-- Internal
 
 -- `({ s = a }, { s = a }) -> { s = a }`.
 _assign = function(a, b)
@@ -68,6 +72,15 @@ _curryN = function(n, f)
       return f(...)
     end
   end
+end
+
+-- `{ s = a } -> { a = s }`.
+_invert = function(a)
+  local b = {}
+  for key, val in pairs(a) do
+    b[val] = key
+  end
+  return b
 end
 
 -- `function -> number`.
@@ -121,12 +134,12 @@ _validate = _curryN(2, not _DEBUG and _noop or function(func, ...)
     local inner  = match(t, '^%[(%a+)%]$')
     local vararg = match(t, '^%.%.%.(%a+)$')
 
-    local name, val = getlocal(level, i)
+    local name, val = getlocal(LEVEL, i)
     local valType = type(val)
     local base, err
 
     if (inner) then
-      base = format('%s: %s arg must be list', func, ord[i])
+      base = format('%s: %s arg must be list', func, ORD[i])
       err  = base .. format(', got %s', valType)
       assert(valType == 'table', err)
 
@@ -143,18 +156,18 @@ _validate = _curryN(2, not _DEBUG and _noop or function(func, ...)
       if not FIVE_ONE then
         base = format('%s: vararg must be all %ss', func, vararg)
         local j = -1
-        name, val = getlocal(level, j)
+        name, val = getlocal(LEVEL, j)
         while val do
           valType = type(val)
           err = base .. format(', got a %s', valType)
           assert(valType == vararg, err)
           j = j - 1
-          name, val = getlocal(level, j)
+          name, val = getlocal(LEVEL, j)
         end
       end
 
     elseif (len(t) > 1) then
-      err = format('%s: %s arg must be %s, got %s', func, ord[i], t, valType)
+      err = format('%s: %s arg must be %s, got %s', func, ORD[i], t, valType)
       assert(valType == t, err)
     end
   end
@@ -592,6 +605,24 @@ non = function(pred)
   end
 end
 
+--- `[string] -> { s = a } -> { s = a }`.
+--
+-- Returns a partial copy of a table omitting the keys specified.
+-- @function omit
+-- @within Table
+-- @tparam table keys List of string keys to omit.
+-- @tparam table table The original table.
+-- @treturn table A new table with properties from `keys` not on it.
+omit = _curryN(2, function(keys, orig)
+  _validate('omit', '[string]', 'table')
+  local res = {}
+  keys = _invert(keys)
+  for key, val in pairs(orig) do
+    if not keys[key] then res[key] = val end
+  end
+  return res
+end)
+
 --- `((a, b, ...) -> z) -> [a, b, ...] -> ((c, d, ...) -> z)`.
 --
 -- Takes a function `f` and a list of arguments, and returns a function `g`.
@@ -609,7 +640,7 @@ end)
 
 --- `[string] -> { s = a } -> { s = a }`.
 --
--- Returns a partial copy of an object containing only the keys specified.
+-- Returns a partial copy of a table containing only the keys specified.
 -- If the key does not exist, the property is ignored.
 -- @function pick
 -- @within Table
@@ -790,6 +821,7 @@ local squirrel = {
   merge     = merge,
   min       = min,
   multiply  = multiply,
+  omit      = omit,
   non       = non,
   partial   = partial,
   pick      = pick,
