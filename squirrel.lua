@@ -267,11 +267,11 @@ end)
 -- @within Function
 -- @tparam any x The value to wrap in a function.
 -- @treturn function The new, constant-value function.
-constant = function(val)
+constant = _curryN(1, function(val)
   return function()
     return val
   end
-end
+end)
 
 --- `((a, b) -> c) -> a -> b -> c`.
 --
@@ -293,10 +293,10 @@ end
 -- @tparam function f The function to curry.
 -- @treturn function A new, curried function.
 -- @see curryN
-curry = function(f)
+curry = _curryN(1, function(f)
   _validate('curry', 'function')
   return _curry(f)
-end
+end)
 
 --- `number -> ((a, b) -> c) -> a -> b -> c`.
 --
@@ -328,7 +328,7 @@ end)
 -- @within List
 -- @tparam function f The function to invoke.
 -- @tparam table list The list to iterate over.
--- @treturn table The origin list.
+-- @treturn table The original list.
 each = _curryN(2, function(f, list)
   _validate('each', 'function', '[a]')
   for _, v in ipairs(list) do
@@ -382,17 +382,17 @@ end)
 -- @within Function
 -- @tparam function f The function to flip.
 -- @treturn function A new, flipped function. (_is curried with arity 2_)
-flip = function(f)
+flip = _curryN(1, function(f)
   _validate('flip', 'function')
   return _curryN(2, function(a, b, ...)
     return f(b, a, ...)
   end)
-end
+end)
 
 --- `((a, a) -> boolean) -> [a] -> [[a]]`.
 --
--- Takes a list and returns a list of lists where each sublist's elements are
--- all satisfied pairwise comparison according to the provided function.
+-- Takes a list and returns a list of lists, where each sublist's elements are
+-- all equivalent according to the provided function.
 -- Only adjacent elements are passed to the comparison function.
 -- @function groupWith
 -- @within List
@@ -430,10 +430,10 @@ end)
 -- @within List
 -- @tparam table list The original list.
 -- @treturn any The first element of `list`, or `nil` if `list` is empty.
-head = function(list)
+head = _curryN(1, function(list)
   _validate('head', '[a]')
   return list[1]
-end
+end)
 
 --- `a -> a`.
 --
@@ -443,7 +443,7 @@ end
 -- @within Function
 -- @tparam any x The value(s) to return.
 -- @treturn any The input value(s).
-identity = _identity
+identity = _curryN(1, _identity)
 
 --- `(a -> boolean) -> (a -> b) -> (a -> c) -> a -> b | c`.
 --
@@ -469,12 +469,12 @@ end)
 -- @within List
 -- @tparam table list The original list.
 -- @treturn table A new list containing all but the last element of `list`.
-init = function(a)
+init = _curryN(1, function(a)
   _validate('init', '[a]')
   local b = _cloneList(a)
   remove(b)
   return b
-end
+end)
 
 --- `{ s = a } -> { a = s }`.
 --
@@ -510,10 +510,10 @@ end)
 -- @within List
 -- @tparam table list The original list.
 -- @treturn any The last element of `list`, or `nil` if `list` is empty.
-last = function(list)
+last = _curryN(1, function(list)
   _validate('last', '[a]')
   return list[#list]
-end
+end)
 
 --- `number -> number -> boolean`.
 --
@@ -610,12 +610,12 @@ end)
 -- @within Logic
 -- @tparam function pred The original predicate.
 -- @treturn function A new function that returns the logical opposite of `pred`.
-non = function(pred)
+non = _curryN(1, function(pred)
   _validate('non', 'function')
   return function(...)
     return not pred(...)
   end
-end
+end)
 
 --- `[string] -> { s = a } -> { s = a }`.
 --
@@ -752,10 +752,10 @@ end)
 -- @within List
 -- @tparam table list The list to reverse.
 -- @treturn table A new, reversed list.
-reverse = function(a)
+reverse = _curryN(1, function(a)
   _validate('reverse', '[a]')
   return _reverse(a)
-end
+end)
 
 --- `[a] -> [a]`.
 --
@@ -764,12 +764,12 @@ end
 -- @within List
 -- @tparam table list The original list.
 -- @treturn table A new list containing all but the first element of `list`.
-tail = function(a)
+tail = _curryN(1, function(a)
   _validate('tail', '[a]')
   local b = _cloneList(a)
   remove(b, 1)
   return b
-end
+end)
 
 --- `(a -> b) -> a -> a`.
 --
@@ -779,13 +779,13 @@ end
 -- @within Function
 -- @tparam function f The function to wrap. Its return value will be discarded.
 -- @treturn any A new, tapped function.
-tap = function(f)
+tap = _curryN(1, function(f)
   _validate('tap', 'function')
   return function(...)
     f(...)
     return ...
   end
-end
+end)
 
 --- `(a -> boolean) -> (a -> b) -> a | b`.
 --

@@ -5,6 +5,10 @@ describe('last', function()
     assert.is.equal(last(list), 3)
   end)
 
+  it('is curried', function()
+    assert.is.equal(last()(list), 3)
+  end)
+
   it('first arg must be list', function()
     assert.has_error(
       partial(last, { 'list' }),

@@ -4,6 +4,11 @@ describe('non', function()
     assert.is_false(non(is('string'))('one'))
   end)
 
+  it('is curried', function()
+    assert.is_true(is('string', 'one'))
+    assert.is_false(non()(is('string'))('one'))
+  end)
+
   it('first arg must be function', function()
     assert.has_error(
       partial(non, { 'pred' }),

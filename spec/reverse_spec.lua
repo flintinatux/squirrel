@@ -9,6 +9,10 @@ describe('reverse', function()
     assert.is_not.equal(reverse(list), list)
   end)
 
+  it('is curried', function()
+    assert.is.same(reverse()(list), { 3, 2, 1 })
+  end)
+
   it('first arg must be list', function()
     assert.has_error(
       partial(reverse, { 'list' }),

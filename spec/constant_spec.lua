@@ -1,7 +1,12 @@
 describe('constant', function()
-  local a = constant('a')
-
   it('always returns the given value', function()
+    local a = constant('a')
+    assert.is.equal(a(), 'a')
+    assert.is.equal(a('b'), 'a')
+  end)
+
+  it('is curried', function()
+    local a = constant()('a')
     assert.is.equal(a(), 'a')
   end)
 end)

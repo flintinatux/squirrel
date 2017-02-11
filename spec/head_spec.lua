@@ -5,6 +5,10 @@ describe('head', function()
     assert.is.equal(head(list), 1)
   end)
 
+  it('is curried', function()
+    assert.is.equal(head()(list), 1)
+  end)
+
   it('first arg must be list', function()
     assert.has_error(
       partial(head, { 'list' }),

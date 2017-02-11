@@ -9,6 +9,10 @@ describe('tail', function()
     assert.is_not.equal(tail(list), list)
   end)
 
+  it('is curried', function()
+    assert.is.same(tail()(list), { 2, 3 })
+  end)
+
   it('first arg must be list', function()
     assert.has_error(
       partial(tail, { 'list' }),

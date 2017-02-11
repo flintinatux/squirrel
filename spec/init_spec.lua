@@ -9,6 +9,10 @@ describe('init', function()
     assert.is_not.equal(init(list), list)
   end)
 
+  it('is curried', function()
+    assert.is.same(init()(list), { 1, 2 })
+  end)
+
   it('first arg must be list', function()
     assert.has_error(
       partial(init, { 'list' }),

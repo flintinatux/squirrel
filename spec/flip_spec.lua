@@ -11,6 +11,10 @@ describe('flip', function()
     assert.is.equal(flip(f)('a')('b', 'c'), 'bac')
   end)
 
+  it('is curried', function()
+    assert.is.equal(flip()(f)('a', 'b', 'c'), 'bac')
+  end)
+
   it('first arg must be function', function()
     assert.has_error(
       partial(flip, { 'function() end' }),
