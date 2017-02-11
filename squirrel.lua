@@ -14,7 +14,7 @@ local unpack = table.unpack or unpack
 
 local _assign, _cloneList, _concat, _curry, _curryN, _identity, _invert, _length, _noop, _partial, _pipe, _pipeR, _reverse, _validate
 
-local add, all, any, compose, composeR, concat, constant, curry, curryN, each, equals, evolve, filter, flip, groupWith, gt, head, identity, ifElse, init, invert, is, last, lt, map, max, merge, min, multiply, non, noop, omit, partial, pick, pipe, pipeR, pluck, prop, reduce, reverse, tail, tap, when
+local add, all, any, compose, composeR, concat, constant, curry, curryN, each, equals, evolve, filter, flip, groupWith, gt, head, identity, ifElse, init, invert, is, keys, last, lt, map, max, merge, min, multiply, non, noop, omit, partial, pick, pipe, pipeR, pluck, prop, reduce, reverse, tail, tap, when
 
 -- Constants
 
@@ -520,6 +520,21 @@ is = _curryN(2, function(typestring, a)
   return type(a) == typestring
 end)
 
+--- `{ s = a } -> [s]`.
+--
+-- Returns a list of all keys on a table. The order of the list is the same as
+-- would be iterated via `pairs`, and as such is not guaranteed to be consistent.
+-- @function keys
+-- @within Table
+-- @tparam table table The table from which to extract keys.
+-- @treturn table The list of keys.
+keys = _curryN(1, function(obj)
+  _validate('keys', 'table')
+  local res = {}
+  for k, _ in pairs(obj) do insert(res, k) end
+  return res
+end)
+
 --- `[a] -> a | nil`.
 --
 -- Returns the last element of the given list.
@@ -650,12 +665,12 @@ noop = _noop
 -- @tparam table keys List of string keys to omit.
 -- @tparam table table The original table.
 -- @treturn table A new table with properties from `keys` not on it.
-omit = _curryN(2, function(keys, orig)
+omit = _curryN(2, function(names, orig)
   _validate('omit', '[string]', 'table')
   local res = {}
-  keys = _invert(keys)
+  names = _invert(names)
   for key, val in pairs(orig) do
-    if not keys[key] then res[key] = val end
+    if not names[key] then res[key] = val end
   end
   return res
 end)
@@ -684,10 +699,10 @@ end)
 -- @tparam table keys List of keys to copy onto a new table.
 -- @tparam table table The table to copy from.
 -- @treturn table A new table with only properties from `keys` on it.
-pick = _curryN(2, function(keys, a)
+pick = _curryN(2, function(names, a)
   _validate('pick', '[string]', 'table')
   local b = {}
-  for _, key in ipairs(keys) do b[key] = a[key] end
+  for _, key in ipairs(names) do b[key] = a[key] end
   return b
 end)
 
@@ -853,6 +868,7 @@ local squirrel = {
   init      = init,
   invert    = invert,
   is        = is,
+  keys      = keys,
   last      = last,
   lt        = lt,
   map       = map,

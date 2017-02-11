@@ -20,7 +20,7 @@ install:
 	@luarocks make
 
 lint:
-	@luacheck squirrel.lua
+	@luacheck -q squirrel.lua
 
 min:
 	@luamin -f squirrel.lua > squirrel_min.lua
