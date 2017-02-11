@@ -14,7 +14,7 @@ local unpack = table.unpack or unpack
 
 local _assign, _cloneList, _concat, _curry, _curryN, _identity, _invert, _length, _noop, _partial, _pipe, _pipeR, _reverse, _validate
 
-local add, all, any, compose, composeR, concat, constant, curry, curryN, each, equals, evolve, flip, groupWith, gt, head, identity, ifElse, init, is, last, lt, map, max, merge, min, multiply, non, omit, partial, pick, pipe, pipeR, pluck, prop, reduce, reverse, tail, tap, when
+local add, all, any, compose, composeR, concat, constant, curry, curryN, each, equals, evolve, flip, groupWith, gt, head, identity, ifElse, init, invert, is, last, lt, map, max, merge, min, multiply, non, omit, partial, pick, pipe, pipeR, pluck, prop, reduce, reverse, tail, tap, when
 
 -- Constants
 
@@ -77,9 +77,7 @@ end
 -- `{ s = a } -> { a = s }`.
 _invert = function(a)
   local b = {}
-  for key, val in pairs(a) do
-    b[val] = key
-  end
+  for k, v in pairs(a) do b[v] = k end
   return b
 end
 
@@ -478,6 +476,20 @@ init = function(a)
   return b
 end
 
+--- `{ s = a } -> { a = s }`.
+--
+-- Returns a new table with the keys of the given table as values, and the values
+-- of the given table as keys. Note that the last key found is preferred when
+-- handling the same value. Also inverts lists.
+-- @function invert
+-- @within Table
+-- @tparam table table The table to invert.
+-- @treturn table A new inverted table.
+invert = _curryN(1, function(orig)
+  _validate('invert', 'table')
+  return _invert(orig)
+end)
+
 --- `string -> a -> boolean`.
 --
 -- Returns `true` if a value is of the specified type.  Calls through to the builtin [`type`](http://devdocs.io/lua~5.3/index#pdf-type) function.
@@ -813,6 +825,7 @@ local squirrel = {
   identity  = identity,
   ifElse    = ifElse,
   init      = init,
+  invert    = invert,
   is        = is,
   last      = last,
   lt        = lt,
