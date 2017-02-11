@@ -14,7 +14,7 @@ local unpack = table.unpack or unpack
 
 local _assign, _cloneList, _concat, _curry, _curryN, _identity, _invert, _length, _noop, _partial, _pipe, _pipeR, _reverse, _validate
 
-local add, all, any, compose, composeR, concat, constant, curry, curryN, each, equals, evolve, flip, groupWith, gt, head, identity, ifElse, init, invert, is, last, lt, map, max, merge, min, multiply, non, omit, partial, pick, pipe, pipeR, pluck, prop, reduce, reverse, tail, tap, when
+local add, all, any, compose, composeR, concat, constant, curry, curryN, each, equals, evolve, flip, groupWith, gt, head, identity, ifElse, init, invert, is, last, lt, map, max, merge, min, multiply, non, noop, omit, partial, pick, pipe, pipeR, pluck, prop, reduce, reverse, tail, tap, when
 
 -- Constants
 
@@ -617,6 +617,14 @@ non = _curryN(1, function(pred)
   end
 end)
 
+--- `a -> ()`.
+--
+-- A function that does nothing and returns nothing.  Useful as a placeholder
+-- or default function.
+-- @function noop
+-- @within Function
+noop = _noop
+
 --- `[string] -> { s = a } -> { s = a }`.
 --
 -- Returns a partial copy of a table omitting the keys specified.
@@ -836,6 +844,7 @@ local squirrel = {
   multiply  = multiply,
   omit      = omit,
   non       = non,
+  noop      = noop,
   partial   = partial,
   pick      = pick,
   pipe      = pipe,
