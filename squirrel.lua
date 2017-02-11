@@ -14,7 +14,7 @@ local unpack = table.unpack or unpack
 
 local _assign, _cloneList, _concat, _curry, _curryN, _identity, _invert, _length, _noop, _partial, _pipe, _pipeR, _reverse, _validate
 
-local add, all, any, compose, composeR, concat, constant, curry, curryN, each, equals, evolve, flip, groupWith, gt, head, identity, ifElse, init, invert, is, last, lt, map, max, merge, min, multiply, non, noop, omit, partial, pick, pipe, pipeR, pluck, prop, reduce, reverse, tail, tap, when
+local add, all, any, compose, composeR, concat, constant, curry, curryN, each, equals, evolve, filter, flip, groupWith, gt, head, identity, ifElse, init, invert, is, last, lt, map, max, merge, min, multiply, non, noop, omit, partial, pick, pipe, pipeR, pluck, prop, reduce, reverse, tail, tap, when
 
 -- Constants
 
@@ -371,6 +371,23 @@ evolve = _curryN(2, function(xfrms, obj)
     res[key] = type(xfrm) == 'function' and xfrm(val)
             or type(xfrm) == 'table'    and evolve(xfrm, val)
             or val
+  end
+  return res
+end)
+
+--- `(a -> boolean) -> [a] -> [a]`.
+--
+-- Returns a new list of all elements satisfying the given predicate.
+-- @function filter
+-- @within List
+-- @tparam function pred The predicate with which to filter.
+-- @tparam table list The original list.
+-- @treturn table A new, filtered list.
+filter = _curryN(2, function(pred, list)
+  _validate('filter', 'function', '[a]')
+  local res = {}
+  for _, val in ipairs(list) do
+    if pred(val) then insert(res, val) end
   end
   return res
 end)
@@ -826,6 +843,7 @@ local squirrel = {
   each      = each,
   equals    = equals,
   evolve    = evolve,
+  filter    = filter,
   flip      = flip,
   groupWith = groupWith,
   gt        = gt,
