@@ -14,7 +14,7 @@ local unpack = table.unpack or unpack
 
 local _assign, _cloneList, _concat, _curry, _curryN, _identity, _invert, _length, _noop, _partial, _pipe, _pipeR, _reverse, _validate
 
-local add, all, any, compose, composeR, concat, constant, curry, curryN, each, equals, evolve, filter, flip, groupWith, gt, head, identity, ifElse, init, invert, is, keys, last, lt, map, max, merge, min, multiply, non, noop, omit, partial, pick, pipe, pipeR, pluck, prop, reduce, reverse, tail, tap, when
+local add, all, any, compose, composeR, concat, constant, curry, curryN, each, equals, evolve, filter, flip, groupWith, gt, head, identity, ifElse, init, invert, is, keys, last, lt, map, max, merge, min, multiply, non, noop, omit, partial, pick, pipe, pipeR, pluck, prop, reduce, reverse, tail, tap, unfold, when
 
 -- Constants
 
@@ -827,6 +827,29 @@ tap = _curryN(1, function(f)
   end
 end)
 
+--- `(a -> { b, a } | boolean) -> a -> [b]`.
+--
+-- Builds a list from a seed value. Accepts an iterator function, which either
+-- returns `false` to stop iteration, or a pair of values:
+--
+-- - `b` - The value to add to the resulting list.
+-- - `a` - The seed to use in the next iteration.
+-- @function unfold
+-- @within List
+-- @tparam function f The iterator function.
+-- @tparam any seed The initial seed to start the unfold.
+-- @treturn table The final list.
+unfold = _curryN(2, function(f, seed)
+  _validate('unfold', 'function', 'a')
+  local res = {}
+  local val = f(seed)
+  while val do
+    insert(res, val[1])
+    val = f(val[2])
+  end
+  return res
+end)
+
 --- `(a -> boolean) -> (a -> b) -> a | b`.
 --
 -- Creates a function that will either process the `onTrue` or pass-through the
@@ -889,6 +912,7 @@ local squirrel = {
   reverse   = reverse,
   tail      = tail,
   tap       = tap,
+  unfold    = unfold,
   when      = when
 }
 
